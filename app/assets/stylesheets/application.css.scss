@@ -13,3 +13,16 @@
  *= require_tree .
  *= require_self
  */
+
+html {
+  padding-left: calc(100vw - 100%);
+  background-color: #eee;
+}
+
+nav {
+  padding-left: calc(100vw - 100%);
+}
+
+main {
+  padding-top: 25px;
+}

@@ -36,4 +36,6 @@ group :development do
   gem 'better_errors'
   gem 'hub', :require=>nil
   gem 'rails_layout'
+  gem 'letter_opener'
+  gem 'binding_of_caller'
 end

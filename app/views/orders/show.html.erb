@@ -1,0 +1,12 @@
+<h1>Your Order</h1>
+
+<div class="row">
+  <% @order_items.each do |orderItem| %>
+    <p><%= orderItem %></p>
+    <p><%= orderItem[:name] %></p>
+    <p><%= orderItem[:description] %></p>
+    <p><%= orderItem[:price] %></p>
+    <p><%= orderItem[:amount] %></p>
+    <hr />
+  <% end %>
+</div>

@@ -1,9 +1,16 @@
 class User < ApplicationRecord
-  enum role: [:user, :vip, :admin]
+  enum role: [:customer, :seller, :admin]
+  has_one :cart
+  has_many :orders
   after_initialize :set_default_role, :if => :new_record?
+  after_create :create_cart
 
   def set_default_role
-    self.role ||= :user
+    self.role ||= :customer
+  end
+
+  def create_cart
+    Cart.create(user_id: id)
   end
 
   # Include default devise modules. Others available are:

@@ -1,0 +1,12 @@
+<h1>Your Cart</h1>
+
+<div class="row">
+  <% @cart_items.each do |cartItem| %>
+    <p><%= cartItem %></p>
+    <p><%= cartItem[:name] %></p>
+    <p><%= cartItem[:description] %></p>
+    <p><%= cartItem[:price] %></p>
+    <p><%= cartItem[:amount] %></p>
+    <hr />
+  <% end %>
+</div>
