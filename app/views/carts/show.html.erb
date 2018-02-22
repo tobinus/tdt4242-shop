@@ -1,5 +1,11 @@
 <h1>Your Cart</h1>
 
+<p>TODO</p>
+<ul>
+  <li>only make this accessible when products are in the cart (or say that it's empty and remove button)</li>
+  <li>add payment input below list of products (and then save the payment data to the order)</li>
+</ul>
+
 <div class="row">
   <% @cart_items.each do |cartItem| %>
     <p><%= cartItem %></p>
@@ -10,3 +16,6 @@
     <hr />
   <% end %>
 </div>
+
+<!-- TODO if cart is not empty -->
+  <%= link_to 'Proceed to checkout', { controller: 'orders', action: 'new' }, class: 'btn btn-default' %>

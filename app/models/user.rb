@@ -10,7 +10,11 @@ class User < ApplicationRecord
   end
 
   def create_cart
-    Cart.create(user_id: id)
+    @cart = Cart.create(user_id: id)
+    self.cart_id = @cart.id
+    save
+    logger.debug "New cart ID is #{@cart.id}"
+    logger.debug "Cart ID saved to user is #{cart_id}"
   end
 
   # Include default devise modules. Others available are:
