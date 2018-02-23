@@ -10,10 +10,10 @@ Rails.application.routes.draw do
     root to: "users#index"
   end
 
+  resources :products
   root to: 'products#index'
   devise_for :users
   resources :users
-  resources :products
   get 'manage-products' => 'products#manage'
   resources :carts
   get 'cart' => 'carts#show'
