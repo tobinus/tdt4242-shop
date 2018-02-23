@@ -24,9 +24,10 @@
     </tbody>
   </table>
 <% else %>
-  <p>You have no items in your cart.</p>
+  <h2 class="text-muted text-center margin-top-large">You do not have any items in your cart.</h2>
 <% end %>
 
+<%= link_to 'Continue Shopping', { controller: 'products', action: 'index' }, class: 'btn btn-default' %>
 <% if @cart.cart_items.length > 0 %>
-  <%= link_to 'Proceed to checkout', { controller: 'orders', action: 'checkout' }, class: 'btn btn-default' %>
+  <%= link_to 'Proceed to Checkout', { controller: 'orders', action: 'checkout' }, class: 'btn btn-primary pull-right' %>
 <% end %>

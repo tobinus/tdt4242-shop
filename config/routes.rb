@@ -10,7 +10,7 @@ Rails.application.routes.draw do
     root to: "users#index"
   end
 
-  root to: 'visitors#index'
+  root to: 'products#index'
   devise_for :users
   resources :users
   resources :products

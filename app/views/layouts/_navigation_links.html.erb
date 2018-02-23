@@ -1,8 +1,12 @@
 <%# add navigation links to this file %>
 <li><%= link_to 'About', page_path('about') %></li>
-<li><%= link_to 'Products', products_path %></li>
 <% if user_signed_in? %>
-  <li><%= link_to 'Cart', '/cart' %></li>
+  <li>
+    <%= link_to '/cart' do %>
+      Cart
+      <%= content_tag(:span, current_user.cart.cart_items.length, :class => "badge") %>
+    <% end %>
+  </li>
   <li><%= link_to 'Your Orders', orders_path %></li>
 <% end %>
 <% if user_signed_in? and current_user.role != 'customer' %>

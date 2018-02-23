@@ -10,9 +10,13 @@
   </div>
 <% end %>
 
+<h1>Checkout</h1>
+
 <h3>Summary</h3>
 
-<table class="table table-striped">
+<p>Please check the items in your order. If you would like to change the order, use the Back button below and adjust the items in your cart.</p>
+
+<table class="table table-striped margin-top-medium margin-bottom-large">
   <thead>
     <tr>
       <th>Product</th>
@@ -42,20 +46,49 @@
 <h3>Payment Details</h3>
 
 <%= form_for @order, :html => {class: 'form-horizontal'} do |f| %>
-  <div class="field form-group">
-    <%= f.label(:credit_card_type, class: "col-sm-4 control-label") %>
-    <div class="col-sm-8"><%= f.text_field(:credit_card_type, class: "form-control") %></div>
-    <%= f.label(:credit_card_name, class: "col-sm-4 control-label") %>
-    <div class="col-sm-8"><%= f.text_field(:credit_card_name, class: "form-control") %></div>
-    <%= f.label(:credit_card_number, class: "col-sm-4 control-label") %>
-    <div class="col-sm-8"><%= f.text_field(:credit_card_number, class: "form-control") %></div>
-    <%= f.label(:credit_card_expiry, class: "col-sm-4 control-label") %>
-    <div class="col-sm-8"><%= f.text_field(:credit_card_expiry, class: "form-control") %></div>
-    <%= f.label(:credit_card_cvc, class: "col-sm-4 control-label") %>
-    <div class="col-sm-8"><%= f.text_field(:credit_card_cvc, class: "form-control") %></div>
-    <%= hidden_field(:order, :user_id, :value => current_user.id) %>
-    <%= hidden_field(:order, :total_amount, :value => 13.12) %> <!-- TODO -->
+  <div class="form-group">
+    <%= f.label(:credit_card_type, class: "col-sm-2 col-sm-offset-2 control-label") %>
+    <div class="col-sm-6"><%= f.text_field(:credit_card_type, class: "form-control") %></div>
+    <div class="col-sm-2"></div>
   </div>
+  <div class="form-group">
+    <%= f.label(:credit_card_name, class: "col-sm-2 col-sm-offset-2 control-label") %>
+    <div class="col-sm-6"><%= f.text_field(:credit_card_name, class: "form-control") %></div>
+    <div class="col-sm-2"></div>
+  </div>
+  <div class="form-group">
+    <%= f.label(:credit_card_number, class: "col-sm-2 col-sm-offset-2 control-label") %>
+    <div class="col-sm-6"><%= f.text_field(:credit_card_number, class: "form-control") %></div>
+    <div class="col-sm-2"></div>
+  </div>
+  <div class="form-group">
+    <%= f.label(:credit_card_expiry, class: "col-sm-2 col-sm-offset-2 control-label") %>
+    <div class="col-sm-3">
+      <%= select_tag :credit_card_expiry_month,
+                     options_for_select([['January', 1], ['February', 2], ['March', 3], ['April', 4], ['May', 5],
+                                         ['June', 6], ['July', 7], ['August', 8], ['September', 9], ['October', 10],
+                                         ['November', 11], ['December', 12]]
+                     ),
+                     class: "form-control",
+                     name: 'order[credit_card_expiry_month]'
+      %>
+    </div>
+    <div class="col-sm-3">
+      <%= select_tag :credit_card_expiry_year,
+                     options_for_select([2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028]),
+                     class: "form-control",
+                     name: 'order[credit_card_expiry_year]'
+      %>
+    </div>
+    <div class="col-sm-2"></div>
+  </div>
+  <div class="form-group">
+    <%= f.label(:credit_card_cvc, class: "col-sm-2 col-sm-offset-2 control-label") %>
+    <div class="col-sm-6"><%= f.text_field(:credit_card_cvc, class: "form-control") %></div>
+    <div class="col-sm-2"></div>
+  </div>
+  <%= hidden_field(:order, :user_id, :value => current_user.id) %>
 
-  <%= f.submit(class: "btn btn-primary") %>
+  <%= link_to 'Back', '/cart', class: 'btn btn-default' %>
+  <%= f.submit('Place Order', class: "btn btn-primary pull-right") %>
 <% end %>

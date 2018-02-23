@@ -1,14 +1,42 @@
 <h1>Thank you for your order!</h1>
 
-<h1>Your Order</h1>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <p>The total amount for <%= @order.order_items.length %> items is <%= @order.total_amount %>.</p>
+    <p>
+    <h3>Payment Data</h3>
+    <dl class="dl-horizontal">
+      <dt>Credit Card Type</dt>
+      <dd><%= @order.credit_card_type %></dd>
+      <dt>Name on Credit Card</dt>
+      <dd><%= @order.credit_card_name %></dd>
+      <dt>Credit Card Number</dt>
+      <dd><%= @order.credit_card_number %></dd>
+      <dt>Credit Card Expiry</dt>
+      <dd><%= @order.credit_card_expiry %></dd>
+    </dl>
+    </p>
+  </div>
 
-<div class="row">
-  <% @order_items.each do |orderItem| %>
-    <p><%= orderItem %></p>
-    <p><%= orderItem[:name] %></p>
-    <p><%= orderItem[:description] %></p>
-    <p><%= orderItem[:price] %></p>
-    <p><%= orderItem[:amount] %></p>
-    <hr />
-  <% end %>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Product</th>
+      <th>Amount</th>
+      <th>Price per Piece</th>
+      <th>Total Price</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% @order.order_items.each do |order_item| %>
+      <tr>
+        <td><%= order_item.product.name %></td>
+        <td><%= order_item.amount %></td>
+        <td><%= order_item.product.price %></td>
+        <td><%= order_item.amount * order_item.product.price %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
 </div>

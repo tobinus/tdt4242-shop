@@ -2,48 +2,52 @@
 
 <h1>All Orders</h1>
 
-<% @orders.each do |order| %>
-  <div class="panel panel-default">
-    <div class="panel-heading">Order from <%= order.user.name %> on <%= order.created_at %></div>
-    <div class="panel-body">
-      <p>The total amount for <%= order.order_items.length %> items is <%= order.total_amount %>.</p>
-      <p>
-      <h3>Payment Data</h3>
-      <dl class="dl-horizontal">
-        <dt>Credit Card Type</dt>
-        <dd><%= order.credit_card_type %></dd>
-        <dt>Name on Credit Card</dt>
-        <dd><%= order.credit_card_name %></dd>
-        <dt>Credit Card Number</dt>
-        <dd><%= order.credit_card_number %></dd>
-        <dt>Credit Card Expiry</dt>
-        <dd><%= order.credit_card_expiry %></dd>
-      </dl>
-      </p>
-    </div>
+<% if @orders.length > 0 %>
+  <% @orders.each do |order| %>
+    <div class="panel panel-default">
+      <div class="panel-heading">Order from <%= order.user.name %> on <%= order.created_at %></div>
+      <div class="panel-body">
+        <p>The total amount for <%= order.order_items.length %> items is <%= order.total_amount %>.</p>
+        <p>
+        <h3>Payment Data</h3>
+        <dl class="dl-horizontal">
+          <dt>Credit Card Type</dt>
+          <dd><%= order.credit_card_type %></dd>
+          <dt>Name on Credit Card</dt>
+          <dd><%= order.credit_card_name %></dd>
+          <dt>Credit Card Number</dt>
+          <dd><%= order.credit_card_number %></dd>
+          <dt>Credit Card Expiry</dt>
+          <dd><%= order.credit_card_expiry %></dd>
+        </dl>
+        </p>
+      </div>
 
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th>Product</th>
-        <th>Amount</th>
-        <th>Price per Piece</th>
-        <th>Total Price</th>
-      </tr>
-      </thead>
-
-      <tbody>
-      <% order.order_items.each do |order_item| %>
+      <table class="table table-striped">
+        <thead>
         <tr>
-          <td><%= order_item.product.name %></td>
-          <td><%= order_item.amount %></td>
-          <td><%= order_item.product.price %></td>
-          <td><%= order_item.amount * order_item.product.price %></td>
+          <th>Product</th>
+          <th>Amount</th>
+          <th>Price per Piece</th>
+          <th>Total Price</th>
         </tr>
-      <% end %>
-      </tbody>
-    </table>
+        </thead>
 
-    <!--<div class="panel-footer"></div>-->
-  </div>
+        <tbody>
+        <% order.order_items.each do |order_item| %>
+          <tr>
+            <td><%= order_item.product.name %></td>
+            <td><%= order_item.amount %></td>
+            <td><%= order_item.product.price %></td>
+            <td><%= order_item.amount * order_item.product.price %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+
+      <!--<div class="panel-footer"></div>-->
+    </div>
+  <% end %>
+<% else %>
+  <h2 class="text-muted text-center margin-top-large">There have not yet been any orders.</h2>
 <% end %>
