@@ -7,7 +7,15 @@ class OrderPolicy
   end
 
   def index?
-    @current_user.present? and (@current_user.admin? or @current_user.seller?)
+    @current_user.present?
+  end
+
+  def index_all?
+    @current_user.present? and (@current_user.role == 'admin' or @current_user.role == 'seller')
+  end
+
+  def checkout?
+    @current_user.present?
   end
 
   def show?

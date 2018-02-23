@@ -1,24 +1,24 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Your Orders</h1>
+<h1>All Orders</h1>
 
 <% @orders.each do |order| %>
   <div class="panel panel-default">
-    <div class="panel-heading">Your order from <%= order.created_at %></div>
+    <div class="panel-heading">Order from <%= order.user.name %> on <%= order.created_at %></div>
     <div class="panel-body">
       <p>The total amount for <%= order.order_items.length %> items is <%= order.total_amount %>.</p>
       <p>
-        <h3>Payment Data</h3>
-        <dl class="dl-horizontal">
-          <dt>Credit Card Type</dt>
-          <dd><%= order.credit_card_type %></dd>
-          <dt>Name on Credit Card</dt>
-          <dd><%= order.credit_card_name %></dd>
-          <dt>Credit Card Number</dt>
-          <dd><%= order.credit_card_number %></dd>
-          <dt>Credit Card Expiry</dt>
-          <dd><%= order.credit_card_expiry %></dd>
-        </dl>
+      <h3>Payment Data</h3>
+      <dl class="dl-horizontal">
+        <dt>Credit Card Type</dt>
+        <dd><%= order.credit_card_type %></dd>
+        <dt>Name on Credit Card</dt>
+        <dd><%= order.credit_card_name %></dd>
+        <dt>Credit Card Number</dt>
+        <dd><%= order.credit_card_number %></dd>
+        <dt>Credit Card Expiry</dt>
+        <dd><%= order.credit_card_expiry %></dd>
+      </dl>
       </p>
     </div>
 
@@ -43,5 +43,7 @@
       <% end %>
       </tbody>
     </table>
+
+    <!--<div class="panel-footer"></div>-->
   </div>
 <% end %>

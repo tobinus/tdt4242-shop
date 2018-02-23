@@ -1,21 +1,32 @@
 <h1>Your Cart</h1>
 
-<p>TODO</p>
-<ul>
-  <li>only make this accessible when products are in the cart (or say that it's empty and remove button)</li>
-  <li>add payment input below list of products (and then save the payment data to the order)</li>
-</ul>
+<% if @cart.cart_items.length > 0 %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Amount</th>
+        <th>Price per Piece</th>
+        <th>Total Price</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @cart.cart_items.each do |cart_item| %>
+        <tr>
+          <td><strong><%= cart_item.product.name %></strong><br /><%= cart_item.product.description %></td>
+          <td><%= cart_item.amount %></td>
+          <td><%= cart_item.product.price %></td>
+          <td><%= cart_item.amount * cart_item.product.price %></td>
+          <td>Remove</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>You have no items in your cart.</p>
+<% end %>
 
-<div class="row">
-  <% @cart_items.each do |cartItem| %>
-    <p><%= cartItem %></p>
-    <p><%= cartItem[:name] %></p>
-    <p><%= cartItem[:description] %></p>
-    <p><%= cartItem[:price] %></p>
-    <p><%= cartItem[:amount] %></p>
-    <hr />
-  <% end %>
-</div>
-
-<!-- TODO if cart is not empty -->
-  <%= link_to 'Proceed to checkout', { controller: 'orders', action: 'new' }, class: 'btn btn-default' %>
+<% if @cart.cart_items.length > 0 %>
+  <%= link_to 'Proceed to checkout', { controller: 'orders', action: 'checkout' }, class: 'btn btn-default' %>
+<% end %>

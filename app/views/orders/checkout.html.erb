@@ -1,0 +1,61 @@
+<% if @order.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@order.errors.count, "error") %> prohibited this order from being placed:</h2>
+
+    <ul>
+      <% @order.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<h3>Summary</h3>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Amount</th>
+      <th>Price per Piece</th>
+      <th>Total Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @cart.cart_items.each do |cart_item| %>
+      <tr>
+        <td><strong><%= cart_item.product.name %></strong><br /><%= cart_item.product.description %></td>
+        <td><%= cart_item.amount %></td>
+        <td><%= cart_item.product.price %></td>
+        <td><%= cart_item.amount * cart_item.product.price %></td>
+      </tr>
+    <% end %>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="3">Total</td>
+      <td><%= @total_amount %></td>
+    </tr>
+  </tfoot>
+</table>
+
+<h3>Payment Details</h3>
+
+<%= form_for @order, :html => {class: 'form-horizontal'} do |f| %>
+  <div class="field form-group">
+    <%= f.label(:credit_card_type, class: "col-sm-4 control-label") %>
+    <div class="col-sm-8"><%= f.text_field(:credit_card_type, class: "form-control") %></div>
+    <%= f.label(:credit_card_name, class: "col-sm-4 control-label") %>
+    <div class="col-sm-8"><%= f.text_field(:credit_card_name, class: "form-control") %></div>
+    <%= f.label(:credit_card_number, class: "col-sm-4 control-label") %>
+    <div class="col-sm-8"><%= f.text_field(:credit_card_number, class: "form-control") %></div>
+    <%= f.label(:credit_card_expiry, class: "col-sm-4 control-label") %>
+    <div class="col-sm-8"><%= f.text_field(:credit_card_expiry, class: "form-control") %></div>
+    <%= f.label(:credit_card_cvc, class: "col-sm-4 control-label") %>
+    <div class="col-sm-8"><%= f.text_field(:credit_card_cvc, class: "form-control") %></div>
+    <%= hidden_field(:order, :user_id, :value => current_user.id) %>
+    <%= hidden_field(:order, :total_amount, :value => 13.12) %> <!-- TODO -->
+  </div>
+
+  <%= f.submit(class: "btn btn-primary") %>
+<% end %>

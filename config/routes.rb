@@ -14,11 +14,14 @@ Rails.application.routes.draw do
   devise_for :users
   resources :users
   resources :products
-  get 'manageproducts' => 'products#manage'
+  get 'manage-products' => 'products#manage'
   resources :carts
   get 'cart' => 'carts#show'
   resources :cart_items
   post 'addtocart' => 'cart_items#add_to_cart'
-  resources :orders
+  resources :orders do
+    get :checkout, on: :collection, as: :checkout
+  end
+  get 'manage-orders' => 'orders#index_all'
   resources :order_items
 end
