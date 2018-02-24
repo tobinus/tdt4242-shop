@@ -1,6 +1,38 @@
 <h1>All products</h1>
 
-<div class="row">
+<div class="content">
+  <div class="sidebar">
+    <script>
+      <% #This should be moved to its own js. file or converted into coffeescript %> 
+      function checkboxClick(checkbox, type) {
+        if (checkbox.checked) {
+          <% #replace this with a function that insert the value into the string, if there are no occurrences of it %> 
+          window.location.search = type + checkbox.id;
+        } else {
+          <% #replace this with a function that removes the occurrences checkbox.id in the param string %>
+          window.location.search = '';
+        }
+      }
+    </script>
+    <h4>Filter by brand:</h4>
+    <% counter = 0 %>
+    <% @allBrands.each do |brand| %>
+      <% #makes sure that the labels and checkboxes vertically align %> 
+      <label for="_<%= counter %>"><%= brand %></label>
+      <input id="_<%= counter %>" type="checkbox" onclick="checkboxClick(this, 'brand=')">
+      <% counter += 1 %>
+    <% end %>
+    <h4>Filter by material:</h4>
+    <% counter = 0 %>
+    <% @allMaterials.each do |material| %>
+      <label for="_<%= counter %>"><%= material %></label>
+      <input id="_<%= counter %>" type="checkbox" onclick="checkboxClick(this, 'material=')">
+      <% counter += 1 %>
+    <% end %>
+    
+  <% #Create javascript that checks the checkboxes after the values in the params string %> 
+  </div>
+  <div class="row">
   <% if @products.length > 0 %>
     <% @products.each do |product| %>
       <div class="col-sm-4">
@@ -31,4 +63,5 @@
     <h2 class="text-muted text-center margin-top-large">There are no products in the shop.</h2>
     <p class="text-muted text-center">If you're a seller, create some products now.</p>
   <% end %>
+</div>
 </div>

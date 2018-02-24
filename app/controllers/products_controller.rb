@@ -4,10 +4,14 @@ class ProductsController < ApplicationController
   def index
     authorize Product
     allProducts = Product.all
+    brands = Array.new
+    materials = Array.new
     @products = Array.new
     allProducts.each do |product|
+      brands.insert(-1, product.brand)
+      materials.insert(-1, product.material)
       #filter product into @products by parameters, this should be moved into its own function
-      if params[:brand] == nil || params[:brand] == product.brand
+      if params[:brand] == nil || params[:material] == product.brand
         if params[:material] == nil || params[:material] == product.material
           if params[:lprice] == nil || params[:lprice] <= product.price
             if params[:hprice] == nil || params[:hprice] >= product.price
@@ -17,6 +21,8 @@ class ProductsController < ApplicationController
         end
       end
     end
+    @allBrands = brands.uniq
+    @allMaterials = materials.uniq
   end
 
   def manage
