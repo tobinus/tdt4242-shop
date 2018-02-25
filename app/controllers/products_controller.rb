@@ -2,6 +2,7 @@ class ProductsController < ApplicationController
   after_action :verify_authorized
 
   def index
+    #TODO: Fix this mess!
     authorize Product
     allProducts = Product.all
     brands = Array.new
@@ -13,11 +14,12 @@ class ProductsController < ApplicationController
       #filter product into @products by parameters, this should be moved into its own function
       if params[:brand] == nil || params[:material] == product.brand
         if params[:material] == nil || params[:material] == product.material
-          if params[:lprice] == nil || params[:lprice] <= product.price
-            if params[:hprice] == nil || params[:hprice] >= product.price
+          #Need to convert param string into int before comparison, since it crashes in the current state
+          #if params[:lprice] == nil || params[:lprice] <= product.price
+            #if params[:hprice] == nil || params[:hprice] >= product.price
               @products.insert(-1, product)
-            end
-          end
+            #end
+          #end
         end
       end
     end
