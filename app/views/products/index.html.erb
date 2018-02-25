@@ -2,41 +2,31 @@
 
 <div class="content">
   <div class="sidebar">
+    
+    <h4>Filter by brand:</h4>
+    <% counter = 0 %>
+    <% @allBrands.each do |brand| %>
+      <% #TODO: make sure that the labels and checkboxes vertically align %> 
+      <label for="b<%= counter %>"><%= brand %></label>
+      <input id="b<%= counter %>" type="checkbox" onclick="checkboxClick(this, 'brand')">
+      <% counter += 1 %>
+    <% end %>
+    
+    <h4>Filter by material:</h4>
+    <% counter = 0 %>
+    <% @allMaterials.each do |material| %>
+      <label for="m<%= counter %>"><%= material %></label>
+      <input id="m<%= counter %>" type="checkbox" onclick="checkboxClick(this, 'material')">
+      <% counter += 1 %>
+    <% end %>
+    
+    <p id="test"></p>
+    
     <script>
       <% #This should be moved to its own js. file or converted into coffeescript %> 
       <% #Should create a list of lists, where list1: brand, list2: material, lower and higher price%>
       <% #The intention is to use this to build a query string in the url %>
       
-      function checkboxClick(checkbox, type) {
-        var paramString = window.location.search;
-        if (checkbox.checked) {
-          <% #replace this with a function that insert the value into the string, if there are no occurrences of it %>
-          
-          window.location.search = type + checkbox.id;
-        } else {
-          <% #replace this with a function that removes the occurrences checkbox.id in the param string %>
-          window.location.search = removeParam(checkbox.id, paramString);
-        }
-      }
-      
-      
-      function listFromParams() {
-      	var brand, material, lprice, hprice;
-        var list = [brand, material, lprice, hprice];
-        var paramString = "fdsfsdf?brand=b0_b1_b2_&material=m1_m3_m4&lprice=100&hprice=1000";
-        var pos = paramString.indexOf("?");
-        
-        if (pos != -1) {
-        	paramString = paramString.substring(pos+1);
-            brand = createList(paramString, "brand=");
-            material = createList(paramString, "material=");
-            lprice = getPrice(paramString, "lprice=");
-            hprice = getPrice(paramString, "hprice=");
-            return [brand, material, lprice, hprice];
-    	  } else {
-        	return null;
-    	  }
-      }
       function createList(paramString, paramName) {
       	var pos = paramString.search(paramName);
       	if (pos != -1) {
@@ -64,34 +54,111 @@
       		return null;
       	}
       }
-
-
-      
-
-    </script>
-    <h4>Filter by brand:</h4>
-    <% counter = 0 %>
-    <% @allBrands.each do |brand| %>
-      <% #makes sure that the labels and checkboxes vertically align %> 
-      <label for="b<%= counter %>_"><%= brand %></label>
-      <input id="b<%= counter %>_" type="checkbox" onclick="checkboxClick(this, 'brand=')">
-      <% counter += 1 %>
-    <% end %>
-    
-    <h4>Filter by material:</h4>
-    <% counter = 0 %>
-    <% @allMaterials.each do |material| %>
-      <label for="m<%= counter %>_"><%= material %></label>
-      <input id="m<%= counter %>_" type="checkbox" onclick="checkboxClick(this, 'material=')">
-      <% counter += 1 %>
-    <% end %>
-  <% #Create javascript that checks the checkboxes after the values in the params string %> 
-  <script>
-      if (window.location.search == '?brand=b0_') {
-        document.getElementById("b0_").checked = true;
+      function listFromParams() {
+      	var brand, material, lprice, hprice;
+      	var paramString = window.location.href;
+      	var pos = paramString.indexOf("?");
+              
+      	if (pos != -1) {
+      		paramString = paramString.substring(pos+1);
+      		brand = createList(paramString, "brand=");
+      		material = createList(paramString, "material=");
+      		lprice = getPrice(paramString, "lprice=");
+      		hprice = getPrice(paramString, "hprice=");
+      		return [brand, material, lprice, hprice];
+      	} else {
+      		return null;
+      	}
       }
-
-  </script>
+      
+      function buildQueryUrl(list) {
+      	var queryString = "?";
+          if (list[0] != null) {
+          	queryString += "brand=";
+          	for (i = 0; i < list[0].length; i++) {
+              	queryString += list[0][i] + "_";
+              }
+          }
+          if (list[1] != null) {
+          	if (queryString != "?") {
+              	queryString += "&";
+              }
+              queryString += "material=";
+              for (i = 0; i < list[1].length; i++) {
+              	queryString += list[1][i] + "_";
+              }
+          }
+          if (list[2] != null) {
+          	if (queryString != "?") {
+              	queryString += "&";
+              }
+              queryString += "lprice=" + list[2];
+          }
+          if (list[3] != null) {
+          	if (queryString != "?") {
+              	queryString += "&";
+              }
+              queryString += "hprice=" + list[3];
+          }
+          return queryString;
+      }
+      
+      function checkboxClick(checkbox, type) {
+        var list = listFromParams();
+        if (checkbox.checked) {
+          <% #Create list of existing query string params, try to insert into the correct list, then convert it into the new query string%>
+          if (type == "brand") {
+            if (list[0] == null) {
+              list[0] = [checkbox.id];
+            } else {
+              if (list[0].indexOf(checkbox.id) == -1) {
+                list[0].push(checkbox.id);
+              }
+            }
+          }
+          if (type == "material") {
+            if (list[1] == null) {
+              list[1] = [checkbox.id];
+            } else {
+              if (list[1].indexOf(checkbox.id) == -1) {
+                list[1].push(checkbox.id);
+              }
+            }
+          }
+          <% #Needs to be extended for price range, but logic is working so far materials and brands filter, it should also be refactored, but getting it to work is first prio %>
+          window.location.search = buildQueryUrl(list);
+        } else {
+          if (type == "brand") {
+            if (list[0] != null) {
+              var pos = list[0].indexOf(checkbox.id);
+              if (pos != -1) {
+                list[0].splice(pos, 1);
+              }
+            }
+          }
+          if (type == "material") {
+            if (list[1] != null) {
+              var pos = list[1].indexOf(checkbox.id);
+              if (pos != -1) {
+                list[1].splice(pos, 1);
+              }
+            }
+          }
+          window.location.search = buildQueryUrl(list);
+        }
+      }
+      
+      <% #Script to check the checkboxes according to the query string currently in the url %>
+      var queryParams = listFromParams();
+      for(i = 0; i < 2; i++) {
+        if (queryParams[i] != null) {
+          for(j = 0; j < queryParams[i].length; j++) {
+            document.getElementById(queryParams[i][j]).checked = true;
+          }
+        }
+      }
+      
+    </script>
   </div>
   <div class="row">
   <% if @products.length > 0 %>
