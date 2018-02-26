@@ -1,23 +1,35 @@
-<div>
+<h1 class="header-with-button">Manage Products</h1>
+<%= link_to 'New Product', new_product_path, class: 'btn btn-primary pull-right header-button' %>
 
-  <!-- Nav tabs -->
-  <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#add-new-product" aria-controls="add-new-product" role="tab" data-toggle="tab">Add new product</a></li>
-    <li role="presentation"><a href="#manage-stock-levels" aria-controls="manage-stock-levels" role="tab" data-toggle="tab">Manage stock levels</a></li>
-    <li role="presentation"><a href="#manage-deals" aria-controls="manage-deals" role="tab" data-toggle="tab">Manage deals</a></li>
-  </ul>
-
-  <!-- Tab panes -->
-  <div class="tab-content panel panel-default panel-with-tabs">
-    <div role="tabpanel" class="tab-pane panel-body active" id="add-new-product">
-      <%= render 'create_form' %>
-    </div>
-    <div role="tabpanel" class="tab-pane panel-body" id="manage-stock-levels">
-      TODO
-    </div>
-    <div role="tabpanel" class="tab-pane panel-body" id="manage-deals">
-      TODO
-    </div>
-  </div>
-
-</div>
+<table class="table table-striped margin-top-medium margin-bottom-large">
+  <thead>
+  <tr>
+    <th>Product</th>
+    <th class="text-right">Price</th>
+    <th class="text-right">Stock level</th>
+    <th class="text-right">Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @products.each do |product| %>
+    <tr>
+      <td><strong><%= product.name %></strong><br /><%= product.description %></td>
+      <td class="text-right"><%= number_to_currency(product.price) %></td>
+      <td class="text-right">
+        <nobr>
+          <%= form_for product, :remote => true, :html => {class: 'form-inline'} do |f| %>
+            <%= f.number_field(:stock_level, in: 0..100000, step: 1, class: "form-control form-field-small", disabled: true) %>
+            <%= f.submit('Save', disabled: true) %>
+          <% end %>
+        </nobr>
+      </td>
+      <td class="text-right">
+        <nobr>
+          <%= link_to 'Edit', root_path, class: 'btn btn-default' %>
+          <%= link_to 'Remove', root_path, class: 'btn btn-default' %>
+        </nobr>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

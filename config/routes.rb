@@ -7,21 +7,24 @@ Rails.application.routes.draw do
     resources :cart_items
     resources :orders
     resources :order_items
+    resources :deals
     root to: "users#index"
   end
 
-  resources :products
+  resources :products do
+    get :manage, on: :collection, as: :manage
+  end
   root to: 'products#index'
   devise_for :users
   resources :users
-  get 'manage-products' => 'products#manage'
   resources :carts
   get 'cart' => 'carts#show'
   resources :cart_items
   post 'addtocart' => 'cart_items#add_to_cart'
   resources :orders do
     get :checkout, on: :collection, as: :checkout
+    get :manage, on: :collection, as: :manage
   end
-  get 'manage-orders' => 'orders#index_all'
   resources :order_items
+  resources :deals
 end

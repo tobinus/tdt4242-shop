@@ -42,3 +42,23 @@ main {
 .margin-bottom-medium {
   margin-bottom: 5rem;
 }
+
+.no-border-top td {
+  border-top: none !important;
+}
+
+#error_explanation h2 {
+  margin-top: 0;
+}
+
+.form-field-small {
+  width: 10rem !important;
+}
+
+.header-button {
+  margin-top: 20px;
+}
+
+.header-with-button {
+  display: inline-block;
+}

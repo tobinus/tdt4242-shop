@@ -10,7 +10,7 @@ class OrderPolicy
     @current_user.present?
   end
 
-  def index_all?
+  def manage?
     @current_user.present? and (@current_user.role == 'admin' or @current_user.role == 'seller')
   end
 

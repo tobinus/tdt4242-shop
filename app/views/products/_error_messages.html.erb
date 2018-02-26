@@ -1,0 +1,11 @@
+<% if @product.errors.any? %>
+  <div id="error_explanation">
+    <h2>We encountered <%= pluralize(@product.errors.count, "error") %> when saving this product:</h2>
+
+    <ul>
+      <% @product.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>errors

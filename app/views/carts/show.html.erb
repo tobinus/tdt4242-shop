@@ -5,23 +5,54 @@
     <thead>
       <tr>
         <th>Product</th>
-        <th>Amount</th>
-        <th>Price per Piece</th>
-        <th>Total Price</th>
-        <th>Actions</th>
+        <th class="text-right">Amount</th>
+        <th class="text-right">Price per Piece</th>
+        <th class="text-right">Price</th>
+        <th class="text-right">Actions</th>
       </tr>
     </thead>
     <tbody>
       <% @cart.cart_items.each do |cart_item| %>
         <tr>
           <td><strong><%= cart_item.product.name %></strong><br /><%= cart_item.product.description %></td>
-          <td><%= cart_item.amount %></td>
-          <td><%= cart_item.product.price %></td>
-          <td><%= cart_item.amount * cart_item.product.price %></td>
-          <td>Remove</td>
+          <td class="text-right"><%= cart_item.amount %></td>
+          <td class="text-right"><%= number_to_currency(cart_item.product.price) %></td>
+          <td class="text-right"><%= number_to_currency(cart_item.amount * cart_item.product.price) %></td>
+          <td class="text-right">
+            <%= link_to 'Remove', root_path, class: 'btn btn-default' %>
+          </td>
         </tr>
       <% end %>
     </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3">Total before discounts</td>
+        <td class="text-right"><%= number_to_currency(@total_amount) %></td>
+        <td></td>
+      </tr>
+      <% if @discounts.length > 0 %>
+        <tr><td colspan="5"><strong>Discounts</strong></td></tr>
+        <% @discounts.each do |disc| %>
+          <% deal = Deal.find(disc[:deal_id]) %>
+          <tr class="no-border-top">
+            <% if deal.deal_type == 'volume' %>
+              <td colspan="3"><%= "#{disc[:deal_multiplier]}x #{deal.deal_print}" %></td>
+              <td class="text-right"><%= number_to_currency((deal.deal_amount - deal.trigger_amount) * deal.product.price * -1)  %></td>
+              <td></td>
+            <% else %>
+              <td colspan="3"><%= deal.deal_print %></td>
+              <td class="text-right"><%= number_to_currency((1 - deal.discount_percentage) * deal.product.price * disc[:deal_multiplier] * -1) %></td>
+              <td></td>
+            <% end %>
+          </tr>
+        <% end %>
+      <% end %>
+      <tr>
+        <td colspan="3">Total after discounts</td>
+        <td class="text-right"><%= number_to_currency(@total_amount - @total_discount) %></td>
+        <td></td>
+      </tr>
+    </tfoot>
   </table>
 <% else %>
   <h2 class="text-muted text-center margin-top-large">You do not have any items in your cart.</h2>

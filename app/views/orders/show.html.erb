@@ -2,7 +2,7 @@
 
 <div class="panel panel-default">
   <div class="panel-body">
-    <p>The total amount for <%= @order.order_items.length %> items is <%= @order.total_amount %>.</p>
+    <p>The total amount for <%= pluralize(@order.order_items.count, "item") %> is <%= number_to_currency(@order.total_amount) %>.</p>
     <p>
     <h3>Payment Data</h3>
     <dl class="dl-horizontal">
@@ -22,9 +22,9 @@
     <thead>
     <tr>
       <th>Product</th>
-      <th>Amount</th>
-      <th>Price per Piece</th>
-      <th>Total Price</th>
+      <th class="text-right">Amount</th>
+      <th class="text-right">Price per Piece</th>
+      <th class="text-right">Total Price</th>
     </tr>
     </thead>
 
@@ -32,9 +32,9 @@
     <% @order.order_items.each do |order_item| %>
       <tr>
         <td><%= order_item.product.name %></td>
-        <td><%= order_item.amount %></td>
-        <td><%= order_item.product.price %></td>
-        <td><%= order_item.amount * order_item.product.price %></td>
+        <td class="text-right"><%= order_item.amount %></td>
+        <td class="text-right"><%= number_to_currency(order_item.product.price) %></td>
+        <td class="text-right"><%= number_to_currency(order_item.amount * order_item.product.price) %></td>
       </tr>
     <% end %>
     </tbody>

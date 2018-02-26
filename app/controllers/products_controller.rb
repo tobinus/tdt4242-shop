@@ -8,7 +8,7 @@ class ProductsController < ApplicationController
 
   def manage
     authorize Product
-    @product = Product.new
+    @products = Product.all
   end
 
   def show
@@ -34,8 +34,11 @@ class ProductsController < ApplicationController
     respond_to do |format|
       if @product.save
         format.html { redirect_to @product, notice: 'The product has been created successfully.' }
+        format.json { render :show, status: :created, location: @product }
       else
         format.html { render :new }
+        format.json { render json: @product.errors, status: :unprocessable_entity }
+        format.js   { render :new, content_type: 'text/javascript' }
       end
     end
   end

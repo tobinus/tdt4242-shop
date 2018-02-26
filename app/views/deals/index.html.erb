@@ -1,0 +1,38 @@
+<h1>Current Deals</h1>
+
+<% if @deals.length > 0 %>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <% if current_user.role == 'customer' %>
+        <th>Deal Name</th>
+      <% else %>
+        <th>Type</th>
+        <th>Product</th>
+        <th>Created</th>
+        <th>Actions</th>
+      <% end %>
+    </tr>
+    </thead>
+    <tbody>
+    <% @deals.each do |deal| %>
+      <% if current_user.role == 'customer' %>
+        <tr>
+          <td><%= deal.deal_print %></td>
+        </tr>
+      <% else %>
+        <tr>
+          <td><%= deal.deal_print_short %></td>
+          <td><%= deal.product.name %></td>
+          <td><%= deal.created_at %></td>
+          <td>
+            <%= link_to 'Remove', root_path, class: 'btn btn-default' %>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <h2 class="text-muted text-center margin-top-large">There are currently no deals running.</h2>
+<% end %>
