@@ -1,6 +1,186 @@
 <h1>All Products</h1>
 
-<div class="row">
+<div class="content">
+  <div class="sidebar">
+    
+    <h4>Filter by brand:</h4>
+    <% counter = 0 %>
+    <% @allBrands.each do |brand| %>
+      <% #TODO: make sure that the labels and checkboxes vertically align %> 
+      <label for="b<%= counter %>"><%= brand %></label>
+      <input id="b<%= counter %>" type="checkbox" onclick="checkboxClick(this, 'brand')"><br>
+      <% counter += 1 %>
+    <% end %>
+    
+    <h4>Filter by material:</h4>
+    <% counter = 0 %>
+    <% @allMaterials.each do |material| %>
+      <label for="m<%= counter %>"><%= material %></label>
+      <input id="m<%= counter %>" type="checkbox" onclick="checkboxClick(this, 'material')"><br>
+      <% counter += 1 %>
+    <% end %>
+    
+    <h4>Filter by price:</h4>
+    <label for="lprice">Minimum price</label>
+    <input type="number" id="lprice" onchange="priceInput(this, 'lprice')"><br>
+    <label for="hprice">Maximum price</label>
+    <input type="number" id="hprice" onchange="priceInput(this, 'hprice')"><br>
+    
+    <p id="test"></p>
+    
+    <script>
+      <% #This should be moved to its own js. file or converted into coffeescript %> 
+      <% #Should create a list of lists, where list1: brand, list2: material, lower and higher price%>
+      <% #The intention is to use this to build a query string in the url %>
+      
+      function createList(paramString, paramName) {
+      	var pos = paramString.search(paramName);
+      	if (pos != -1) {
+      		var tempParamString = paramString.substring(pos+paramName.length);
+      		var endpos = tempParamString.indexOf("&");
+      		if (endpos != -1) {
+          		tempParamString = tempParamString.substring(0, endpos);
+      		}
+          var list = tempParamString.split("_");
+          return list.slice(0, list.length-1);
+      	} else {
+      		return null;
+      	}
+      }
+      function getPrice(paramString, paramName) {
+      	var pos = paramString.search(paramName);
+      	if (pos != -1) {
+      		var tempParamString = paramString.substring(pos+paramName.length);
+      		var endpos = tempParamString.indexOf("&");
+      		if (endpos != -1) {
+      			tempParamString = tempParamString.substring(0, endpos);
+      		}
+      		return tempParamString
+      	} else {
+      		return null;
+      	}
+      }
+      function listFromParams() {
+      	var brand, material, lprice, hprice;
+      	var paramString = window.location.href;
+      	var pos = paramString.indexOf("?");
+              
+      	if (pos != -1) {
+      		paramString = paramString.substring(pos+1);
+      		brand = createList(paramString, "brand=");
+      		material = createList(paramString, "material=");
+      		lprice = getPrice(paramString, "lprice=");
+      		hprice = getPrice(paramString, "hprice=");
+      		return [brand, material, lprice, hprice];
+      	} else {
+      		return [null, null, null, null];
+      	}
+      }
+      
+      function buildQueryUrl(list) {
+      	var queryString = "?";
+          if (list[0] !== null && list[0].length != 0) {
+          	queryString += "brand=";
+          	for (i = 0; i < list[0].length; i++) {
+              	queryString += list[0][i] + "_";
+              }
+          }
+          if (list[1] !== null && list[1].length != 0) {
+          	if (queryString != "?") {
+              	queryString += "&";
+              }
+              queryString += "material=";
+              for (i = 0; i < list[1].length; i++) {
+              	queryString += list[1][i] + "_";
+              }
+          }
+          if (list[2] !== null && list[2] !== "") {
+          	if (queryString != "?") {
+              	queryString += "&";
+              }
+              queryString += "lprice=" + list[2];
+          }
+          if (list[3] !== null && list[3] !== "") {
+          	if (queryString != "?") {
+              	queryString += "&";
+              }
+              queryString += "hprice=" + list[3];
+          }
+          if (queryString == "?") {
+            queryString = "";
+          }
+          return queryString;
+      }
+      
+      function checkboxClick(checkbox, type) {
+        <% #Create list of existing query string params, insert checkbox.id into this list, then convert it into the new query string%>
+        var list = listFromParams();
+        if (checkbox.checked) {
+          if (type == "brand") {
+            if (list[0] === null) {
+              list[0] = [checkbox.id];
+            } else {
+              if (list[0].indexOf(checkbox.id) == -1) {
+                list[0].push(checkbox.id);
+              }
+            }
+          }
+          if (type == "material") {
+            if (list[1] === null) {
+              list[1] = [checkbox.id];
+            } else {
+              if (list[1].indexOf(checkbox.id) == -1) {
+                list[1].push(checkbox.id);
+              }
+            }
+          }
+          window.location.search = buildQueryUrl(list);
+        } else {
+          if (type == "brand") {
+            if (list[0] !== null) {
+              var pos = list[0].indexOf(checkbox.id);
+              if (pos != -1) {
+                list[0].splice(pos, 1);
+              }
+            }
+          }
+          if (type == "material") {
+            if (list[1] !== null) {
+              var pos = list[1].indexOf(checkbox.id);
+              if (pos != -1) {
+                list[1].splice(pos, 1);
+              }
+            }
+          }
+          window.location.search = buildQueryUrl(list);
+        }
+      }
+      
+      function priceInput(price, type) {
+        var list = listFromParams();
+        if (type == "lprice") {
+          list[2] = price.value;
+        }
+        if (type == "hprice") {
+          list[3] = price.value;
+        }
+        window.location.search = buildQueryUrl(list);
+      }
+      
+      <% #Script to check the checkboxes according to the query string currently in the url %>
+      var queryParams = listFromParams();
+      for(i = 0; i < 2; i++) {
+        if (queryParams[i] != null) {
+          for(j = 0; j < queryParams[i].length; j++) {
+            document.getElementById(queryParams[i][j]).checked = true;
+          }
+        }
+      }
+      document.getElementById("lprice").value = queryParams[2];
+      document.getElementById("hprice").value = queryParams[3];
+    </script>
+  </div>
+  <div class="row">
   <% if @products.length > 0 %>
     <% @products.each do |product| %>
       <div class="col-sm-3">
@@ -31,4 +211,5 @@
     <h2 class="text-muted text-center margin-top-large">There are no products in the shop.</h2>
     <p class="text-muted text-center">If you're a seller, create some products now.</p>
   <% end %>
+</div>
 </div>
