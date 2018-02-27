@@ -12,9 +12,6 @@ class Deal < ApplicationRecord
 =end
 
   def only_one_deal_of_each_type
-    logger.debug "Deal ID: #{id}"
-    logger.debug Deal.where({ product_id: product_id, type: type }).count
-
     errors.add(:type, "– You have already created a #{type} for #{product.name}. Please remove the existing deal before creating a new one.") unless
         Deal.where({ product_id: product_id, type: type }).count.zero? or Deal.where({ product_id: product_id, type: type }).first.id == id
   end
