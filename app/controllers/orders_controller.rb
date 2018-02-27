@@ -33,22 +33,34 @@ class OrdersController < ApplicationController
     @total_amount, @total_discount, @discounts = calculate_total_amount
     @order.total_amount = @total_discount
 
+    # before creating anything, check if there is enough stock of all requested products
+    # in case there is a problematic item, it will be saved to @cart_item
+    @cart_item = nil
+    @cart.cart_items.each do |cart_item|
+      if cart_item.product.stock_level < cart_item.amount
+        @cart_item = cart_item
+      end
+    end
+
     respond_to do |format|
-      if @order.save
+      if @order.save and @cart_item.nil?
         # create order_items out of all cart_items
         # decrease stock level of all cart_items by amount ordered
         # then remove order items
         @cart.cart_items.each do |cart_item|
-          @order_item = OrderItem.create(order_id: @order.id, product_id: cart_item.product_id, amount: cart_item.amount)
-          product = Product.find(cart_item.product_id)
-          product.stock_level -= 1
-          product.save!
-          CartItem.find(cart_item.id).destroy
+          #@order_item = OrderItem.create(order_id: @order.id, product_id: cart_item.product_id, amount: cart_item.amount)
+          cart_item.becomes!(OrderItem)
+          cart_item.update!(cart_item.id, order_id: @order.id, cart_id: nil)
+          cart_item.product.stock_level -= 1
+          cart_item.product.save!
         end
 
         format.html { redirect_to @order, notice: 'Your order has been placed.' }
         format.json { render :show, status: :created, location: @order }
       else
+        unless @cart_item.nil?
+          @order.errors.add(:base, "We do not have enough items of #{@cart_item.product.name} left: #{@cart_item.amount} requested, #{@cart_item.product.stock_level} in stock.")
+        end
         format.html { render :checkout }
         format.json { render json: @order.errors, status: :unprocessable_entity }
         format.js   { render :checkout, content_type: 'text/javascript' }

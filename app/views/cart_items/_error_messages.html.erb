@@ -1,0 +1,11 @@
+<% if @cart_item.errors.any? %>
+  <div id="error_explanation">
+    <h2>We encountered <%= pluralize(@cart_item.errors.count, "error") %> when adding this product to the cart:</h2>
+
+    <ul>
+      <% @cart_item.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>errors

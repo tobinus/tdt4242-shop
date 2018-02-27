@@ -1,4 +1,4 @@
-<h1>All Products</h1>
+<h1 id="page-title">All Products</h1>
 
 <div class="row">
   <div class="col-sm-12 col-md-3">
@@ -219,7 +219,7 @@
             <div class="panel-footer text-right">
               <% if user_signed_in? %>
                 <% if !Cart.product_in_cart?(current_user.id, product.id) and Product.find(product.id).stock_level > 0 %>
-                  <%= link_to 'Add to Cart', { controller: 'cart_items', action: 'add_to_cart', user_id: current_user.id, product_id: product.id }, class: 'btn btn-primary', method: :post, remote: true %>
+                  <%= link_to 'Add to Cart', { controller: 'cart_items', action: 'add_to_cart', product_id: product.id, amount: 1 }, class: 'btn btn-primary', method: :post, remote: true %>
                 <% elsif Product.find(product.id).stock_level > 0 %>
                   <%= link_to 'Item already in cart', {}, class: 'btn btn-default', disabled: 'disabled' %>
                 <% else %>

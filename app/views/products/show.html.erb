@@ -1,4 +1,4 @@
-<h1><%= @product.name %></h1>
+<h1 id="page-title"><%= @product.name %></h1>
 
 <div class="panel panel-default">
   <div class="panel-body">
@@ -23,7 +23,7 @@
         <h4><%= @product.stock_level %> in stock</h4>
         <% if user_signed_in? %>
           <% if !Cart.product_in_cart?(current_user.id, @product.id) and Product.find(@product.id).stock_level > 0 %>
-            <%= link_to 'Add to Cart', { controller: 'cart_items', action: 'add_to_cart', user_id: current_user.id, product_id: @product.id }, class: 'btn btn-primary margin-top-large', method: :post, remote: true %>
+            <%= link_to 'Add to Cart', { controller: 'cart_items', action: 'add_to_cart', product_id: @product.id, amount: 1 }, class: 'btn btn-primary margin-top-large', method: :post, remote: true %>
           <% elsif Product.find(@product.id).stock_level > 0 %>
             <%= link_to 'Item already in cart', {}, class: 'btn btn-default margin-top-large', disabled: 'disabled' %>
           <% else %>
