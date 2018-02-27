@@ -48,7 +48,6 @@ class ProductsController < ApplicationController
       if params[:hprice] != nil && priceStringToInt(params[:lprice]) != nil && priceStringToInt(params[:hprice]) < product.price
         add = false
       end
-      #TODO: Fix the function notMatchingSearchTerm, line 128!
       if params[:search] != nil && notMatchingSearchTerm(params[:search], product)
         add = false
       end
@@ -126,7 +125,6 @@ class ProductsController < ApplicationController
   end
   
   def notMatchingSearchTerm(term, product)
-    
     if product.name.downcase.include? term.downcase
       return false
     end
