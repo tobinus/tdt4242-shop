@@ -33,8 +33,7 @@
     
     <script>
       <% #This should be moved to its own js. file or converted into coffeescript %> 
-      <% #Should create a list of lists, where list1: brand, list2: material, lower and higher price%>
-      <% #The intention is to use this to build a query string in the url %>
+      <% #This code manages the query string in the URL and the values of the filter and search elements, ensuring consistency between them %>
       
       function createList(paramString, paramName) {
       	var pos = paramString.search(paramName);
@@ -71,6 +70,7 @@
           return null;
         }
       }
+      <% #This function creates a list of the parameters in the query string in the URL, the two first elements also being lists, functions above are helper functions for this %>
       function listFromParams() {
       	var brand, material, lprice, hprice;
       	var paramString = window.location.href;
@@ -88,7 +88,7 @@
       		return [null, null, null, null, null];
       	}
       }
-      
+      <% #This function builds the query string for the URL from the listed created by listFromParams() %>
       function buildQueryUrl(list) {
       	var queryString = "?";
           if (list[0] !== null && list[0].length != 0) {
@@ -129,9 +129,7 @@
           }
           return queryString;
       }
-      
       function checkboxClick(checkbox, type) {
-        <% #Create list of existing query string params, insert checkbox.id into this list, then convert it into the new query string%>
         var list = listFromParams();
         if (checkbox.checked) {
           if (type == "brand") {
@@ -191,7 +189,7 @@
         window.location.search = buildQueryUrl(list);
       }
       
-      <% #Script to check the checkboxes according to the query string currently in the url %>
+      <% #This runs on page load, updates filter/search value to those in the query url %>
       var queryParams = listFromParams();
       for(i = 0; i < 2; i++) {
         if (queryParams[i] != null) {
