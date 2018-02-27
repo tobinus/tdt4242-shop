@@ -3,6 +3,9 @@
 <div class="content">
   <div class="sidebar">
     
+    <h4>Search for products:</h4>
+    <input id="search" type="text" onchange="searchInput(this)">
+    
     <h4>Filter by brand:</h4>
     <% counter = 0 %>
     <% @allBrands.each do |brand| %>
@@ -60,6 +63,14 @@
       		return null;
       	}
       }
+      function searchString(paramString) {
+        var pos = paramString.search("search=");
+        if (pos != -1) {
+          return paramString.substring(pos+7);
+        } else {
+          return null;
+        }
+      }
       function listFromParams() {
       	var brand, material, lprice, hprice;
       	var paramString = window.location.href;
@@ -71,9 +82,10 @@
       		material = createList(paramString, "material=");
       		lprice = getPrice(paramString, "lprice=");
       		hprice = getPrice(paramString, "hprice=");
-      		return [brand, material, lprice, hprice];
+      		search = searchString(paramString);
+      		return [brand, material, lprice, hprice, search];
       	} else {
-      		return [null, null, null, null];
+      		return [null, null, null, null, null];
       	}
       }
       
@@ -105,6 +117,12 @@
               	queryString += "&";
               }
               queryString += "hprice=" + list[3];
+          }
+          if (list[4] !== null && list[4] !== "") {
+            if (queryString != "?") {
+              queryString += "&";
+            }
+            queryString += "search=" + list[4];
           }
           if (queryString == "?") {
             queryString = "";
@@ -167,6 +185,12 @@
         window.location.search = buildQueryUrl(list);
       }
       
+      function searchInput(searchBar) {
+        var list = listFromParams();
+        list[4] = searchBar.value;
+        window.location.search = buildQueryUrl(list);
+      }
+      
       <% #Script to check the checkboxes according to the query string currently in the url %>
       var queryParams = listFromParams();
       for(i = 0; i < 2; i++) {
@@ -178,6 +202,7 @@
       }
       document.getElementById("lprice").value = queryParams[2];
       document.getElementById("hprice").value = queryParams[3];
+      document.getElementById("search").value = queryParams[4];
     </script>
   </div>
   <div class="row">
