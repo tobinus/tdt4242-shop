@@ -126,8 +126,14 @@ class ProductsController < ApplicationController
   end
   
   def notMatchingSearchTerm(term, product)
-    #TODO: Add code here!
-    false 
+    
+    if product.name.downcase.include? term.downcase
+      return false
+    end
+    if product.description.downcase.include? term.downcase
+      return false
+    end
+    return true 
   end 
   
 end
