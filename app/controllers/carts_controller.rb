@@ -53,7 +53,7 @@ class CartsController < ApplicationController
         if deal.product_id == cart_item.product_id
           # check for volume-based deals and if trigger amount is reached
           multiplier = 0
-          if deal.deal_type == 'volume'
+          if deal.type == 'VolumeDeal'
             if deal.trigger_amount.present? and cart_item.amount >= deal.deal_amount
               multiplier = cart_item.amount / deal.deal_amount
               discount_amount += multiplier * cart_item.product.price
@@ -66,8 +66,8 @@ class CartsController < ApplicationController
           end
 
           # check for percentage-based deals
-          if deal.deal_type == 'percentage'
-            discount_amount += (cart_item.amount - multiplier) * cart_item.product.price * (1 - deal.discount_percentage)
+          if deal.type == 'PercentageDeal'
+            discount_amount += (cart_item.amount - multiplier) * cart_item.product.price * deal.discount_percentage
             discount = {
                 deal_id: deal.id,
                 deal_multiplier: cart_item.amount

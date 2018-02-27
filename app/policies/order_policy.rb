@@ -15,7 +15,7 @@ class OrderPolicy
   end
 
   def checkout?
-    @current_user.present?
+    @current_user.present? and @current_user.cart.cart_items.count > 0
   end
 
   def show?

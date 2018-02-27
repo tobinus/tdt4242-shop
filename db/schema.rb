@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180225160339) do
+ActiveRecord::Schema.define(version: 20180227142608) do
 
   create_table "cart_items", force: :cascade do |t|
     t.integer "cart_id"
@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 20180225160339) do
     t.integer "trigger_amount"
     t.integer "deal_amount"
     t.float "discount_percentage"
+    t.string "type"
     t.index ["product_id"], name: "index_deals_on_product_id"
   end
 
@@ -61,6 +62,24 @@ ActiveRecord::Schema.define(version: 20180225160339) do
     t.string "credit_card_type"
     t.float "total_amount"
     t.index ["user_id"], name: "index_orders_on_user_id"
+  end
+
+  create_table "percentage_deals", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "product_items", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "type"
+    t.integer "cart_id"
+    t.integer "order_id"
+    t.integer "product_id"
+    t.integer "amount"
+    t.index ["cart_id"], name: "index_product_items_on_cart_id"
+    t.index ["order_id"], name: "index_product_items_on_order_id"
+    t.index ["product_id"], name: "index_product_items_on_product_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -98,6 +117,11 @@ ActiveRecord::Schema.define(version: 20180225160339) do
     t.index ["cart_id"], name: "index_users_on_cart_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "volume_deals", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

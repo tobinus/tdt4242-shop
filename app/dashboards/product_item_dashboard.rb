@@ -1,6 +1,6 @@
 require "administrate/base_dashboard"
 
-class CartItemDashboard < Administrate::BaseDashboard
+class ProductItemDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -9,11 +9,11 @@ class CartItemDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     product: Field::BelongsTo,
-    cart: Field::BelongsTo,
     id: Field::Number,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     type: Field::String,
+    cart_id: Field::Number,
     order_id: Field::Number,
     amount: Field::Number,
   }.freeze
@@ -25,20 +25,20 @@ class CartItemDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
     :product,
-    :cart,
     :id,
     :created_at,
+    :updated_at,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
     :product,
-    :cart,
     :id,
     :created_at,
     :updated_at,
     :type,
+    :cart_id,
     :order_id,
     :amount,
   ].freeze
@@ -48,16 +48,16 @@ class CartItemDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :product,
-    :cart,
     :type,
+    :cart_id,
     :order_id,
     :amount,
   ].freeze
 
-  # Overwrite this method to customize how cart items are displayed
+  # Overwrite this method to customize how product items are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(cart_item)
-  #   "CartItem ##{cart_item.id}"
+  # def display_resource(product_item)
+  #   "ProductItem ##{product_item.id}"
   # end
 end

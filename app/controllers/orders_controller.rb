@@ -36,9 +36,13 @@ class OrdersController < ApplicationController
     respond_to do |format|
       if @order.save
         # create order_items out of all cart_items
+        # decrease stock level of all cart_items by amount ordered
         # then remove order items
         @cart.cart_items.each do |cart_item|
           @order_item = OrderItem.create(order_id: @order.id, product_id: cart_item.product_id, amount: cart_item.amount)
+          product = Product.find(cart_item.product_id)
+          product.stock_level -= 1
+          product.save!
           CartItem.find(cart_item.id).destroy
         end
 
@@ -96,7 +100,7 @@ class OrdersController < ApplicationController
         if deal.product_id == cart_item.product_id
           # check for volume-based deals and if trigger amount is reached
           multiplier = 0
-          if deal.deal_type == 'volume'
+          if deal.type == 'VolumeDeal'
             logger.debug "Trigger amount is #{deal.deal_amount} and item amount is #{cart_item.amount}"
             if deal.trigger_amount.present? and cart_item.amount >= deal.deal_amount
               logger.debug "Deal is achieved"
@@ -111,8 +115,8 @@ class OrdersController < ApplicationController
           end
 
           # check for percentage-based deals
-          if deal.deal_type == 'percentage'
-            discount_amount += (cart_item.amount - multiplier) * cart_item.product.price * (1 - deal.discount_percentage)
+          if deal.type == 'PercentageDeal'
+            discount_amount += (cart_item.amount - multiplier) * cart_item.product.price * deal.discount_percentage
             discount = {
               deal_id: deal.id,
               deal_multiplier: cart_item.amount

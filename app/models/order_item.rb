@@ -1,4 +1,3 @@
-class OrderItem < ApplicationRecord
+class OrderItem < ProductItem
   belongs_to :order
-  belongs_to :product #TODO or has_one?
 end

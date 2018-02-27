@@ -3,15 +3,14 @@ class CartItemsController < ApplicationController
     @cart_item = CartItem.new
   end
 
-  def show
-
-  end
-
-  def create
-
-  end
-
-  def index
+  # DELETE /cart_item/1
+  def destroy
+    @cart_item = CartItem.find(params[:id])
+    @cart_item.destroy
+    respond_to do |format|
+      format.html { redirect_to '/cart', notice: 'The item was successfully removed.' }
+      format.json { head :no_content }
+    end
   end
 
   def add_to_cart

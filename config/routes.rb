@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     resources :orders
     resources :order_items
     resources :deals
+    resources :product_items
     root to: "users#index"
   end
 

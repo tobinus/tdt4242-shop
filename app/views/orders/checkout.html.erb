@@ -33,12 +33,12 @@
       <% @discounts.each do |disc| %>
         <% deal = Deal.find(disc[:deal_id]) %>
         <tr class="no-border-top">
-          <% if deal.deal_type == 'volume' %>
+          <% if deal.type == 'VolumeDeal' %>
             <td colspan="3"><%= "#{disc[:deal_multiplier]}x #{deal.deal_print}" %></td>
             <td class="text-right"><%= number_to_currency((deal.deal_amount - deal.trigger_amount) * deal.product.price * -1)  %></td>
           <% else %>
             <td colspan="3"><%= deal.deal_print %></td>
-            <td class="text-right"><%= number_to_currency((1 - deal.discount_percentage) * deal.product.price * disc[:deal_multiplier] * -1) %></td>
+            <td class="text-right"><%= number_to_currency(deal.discount_percentage * deal.product.price * disc[:deal_multiplier] * -1) %></td>
           <% end %>
         </tr>
       <% end %>

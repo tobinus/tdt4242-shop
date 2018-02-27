@@ -1,8 +1,7 @@
 <h1>All Products</h1>
 
-<div class="content">
-  <div class="sidebar">
-    
+<div class="row">
+  <div class="col-sm-12 col-md-3">
     <h4>Filter by brand:</h4>
     <% counter = 0 %>
     <% @allBrands.each do |brand| %>
@@ -180,36 +179,38 @@
       document.getElementById("hprice").value = queryParams[3];
     </script>
   </div>
-  <div class="row">
-  <% if @products.length > 0 %>
-    <% @products.each do |product| %>
-      <div class="col-sm-4">
-        <div class="panel panel-default">
-          <div class="panel-heading product-panel-heading"><img src="/assets/placeholder_<%= rand(1..4) %>.svg" alt="" class="product-img"></div>
-          <div class="panel-body">
-            <div class="caption">
-              <h4 class="pull-right"><%= number_to_currency(product.price) %></h4>
-              <h4><%= link_to product.name, product %></h4>
-              <p><%= product.description %></p>
+  <div class="col-sm-12 col-md-9 row">
+    <% if @products.length > 0 %>
+      <% @products.each do |product| %>
+        <div class="col-xs-12 col-sm-6 col-lg-4">
+          <div class="panel panel-default">
+            <div class="panel-heading product-panel-heading"><img src="/assets/placeholder_<%= rand(1..4) %>.svg" alt="" class="product-img"></div>
+            <div class="panel-body">
+              <div class="caption">
+                <h4 class="pull-right"><%= number_to_currency(product.price) %></h4>
+                <h4><%= link_to product.name, product %></h4>
+                <p><%= product.description %></p>
+              </div>
+            </div>
+            <div class="panel-footer text-right">
+              <% if user_signed_in? %>
+                <% if !Cart.product_in_cart?(current_user.id, product.id) and Product.find(product.id).stock_level > 0 %>
+                  <%= link_to 'Add to Cart', { controller: 'cart_items', action: 'add_to_cart', user_id: current_user.id, product_id: product.id }, class: 'btn btn-primary', method: :post, remote: true %>
+                <% elsif Product.find(product.id).stock_level > 0 %>
+                  <%= link_to 'Item already in cart', {}, class: 'btn btn-default', disabled: 'disabled' %>
+                <% else %>
+                  <%= link_to 'Item out of stock', {}, class: 'btn btn-default', disabled: 'disabled' %>
+                <% end %>
+              <% else %>
+                <%= link_to 'Please sign in to buy this item', {}, class: 'btn btn-default', disabled: 'disabled' %>
+              <% end %>
             </div>
           </div>
-          <div class="panel-footer text-right">
-            <% if user_signed_in? %>
-              <% if !Cart.product_in_cart?(current_user.id, product.id) %>
-                <%= link_to 'Add to Cart', { controller: 'cart_items', action: 'add_to_cart', user_id: current_user.id, product_id: product.id }, class: 'btn btn-primary', method: :post, remote: true %>
-              <% else %>
-                <%= link_to 'Item already in cart', {}, class: 'btn btn-default', disabled: 'disabled' %>
-              <% end %>
-            <% else %>
-              <%= link_to 'Please sign in to buy this item', {}, class: 'btn btn-default', disabled: 'disabled' %>
-            <% end %>
-          </div>
         </div>
-      </div>
+      <% end %>
+    <% else %>
+      <h2 class="text-muted text-center margin-top-large">There are no products in the shop.</h2>
+      <p class="text-muted text-center">If you're a seller, create some products now.</p>
     <% end %>
-  <% else %>
-    <h2 class="text-muted text-center margin-top-large">There are no products in the shop.</h2>
-    <p class="text-muted text-center">If you're a seller, create some products now.</p>
-  <% end %>
-</div>
+  </div>
 </div>

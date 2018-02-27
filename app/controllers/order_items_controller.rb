@@ -3,15 +3,8 @@ class OrderItemsController < ApplicationController
     @order_item = OrderItem.new
   end
 
-  def show
-
-  end
-
   def create
     @order_item = OrderItem.new(order_item_params)
-  end
-
-  def index
   end
 
   private
