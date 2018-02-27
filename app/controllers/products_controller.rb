@@ -47,6 +47,9 @@ class ProductsController < ApplicationController
       if params[:hprice] != nil && priceStringToInt(params[:lprice]) != nil && priceStringToInt(params[:hprice]) < product.price
         add = false
       end
+      if params[:search] != nil && notMatchingSearchTerm(params[:search], product)
+        add = false
+      end
       if add
         @products.insert(-1, product)
       end
@@ -121,5 +124,15 @@ class ProductsController < ApplicationController
     num = param_string.to_i
     num if num.to_s == param_string && num >= 0
   end
+  
+  def notMatchingSearchTerm(term, product)
+    if product.name.downcase.include? term.downcase
+      return false
+    end
+    if product.description.downcase.include? term.downcase
+      return false
+    end
+    return true 
+  end 
   
 end

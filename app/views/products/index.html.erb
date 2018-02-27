@@ -3,6 +3,9 @@
 <div class="content">
   <div class="sidebar">
     
+    <h4>Search for products:</h4>
+    <input id="search" type="text" onchange="searchInput(this)">
+    
     <h4>Filter by brand:</h4>
     <% counter = 0 %>
     <% @allBrands.each do |brand| %>
@@ -30,8 +33,7 @@
     
     <script>
       <% #This should be moved to its own js. file or converted into coffeescript %> 
-      <% #Should create a list of lists, where list1: brand, list2: material, lower and higher price%>
-      <% #The intention is to use this to build a query string in the url %>
+      <% #This code manages the query string in the URL and the values of the filter and search elements, ensuring consistency between them %>
       
       function createList(paramString, paramName) {
       	var pos = paramString.search(paramName);
@@ -60,6 +62,15 @@
       		return null;
       	}
       }
+      function searchString(paramString) {
+        var pos = paramString.search("search=");
+        if (pos != -1) {
+          return paramString.substring(pos+7);
+        } else {
+          return null;
+        }
+      }
+      <% #This function creates a list of the parameters in the query string in the URL, the two first elements also being lists, functions above are helper functions for this %>
       function listFromParams() {
       	var brand, material, lprice, hprice;
       	var paramString = window.location.href;
@@ -71,12 +82,13 @@
       		material = createList(paramString, "material=");
       		lprice = getPrice(paramString, "lprice=");
       		hprice = getPrice(paramString, "hprice=");
-      		return [brand, material, lprice, hprice];
+      		search = searchString(paramString);
+      		return [brand, material, lprice, hprice, search];
       	} else {
-      		return [null, null, null, null];
+      		return [null, null, null, null, null];
       	}
       }
-      
+      <% #This function builds the query string for the URL from the listed created by listFromParams() %>
       function buildQueryUrl(list) {
       	var queryString = "?";
           if (list[0] !== null && list[0].length != 0) {
@@ -106,14 +118,18 @@
               }
               queryString += "hprice=" + list[3];
           }
+          if (list[4] !== null && list[4] !== "") {
+            if (queryString != "?") {
+              queryString += "&";
+            }
+            queryString += "search=" + list[4];
+          }
           if (queryString == "?") {
             queryString = "";
           }
           return queryString;
       }
-      
       function checkboxClick(checkbox, type) {
-        <% #Create list of existing query string params, insert checkbox.id into this list, then convert it into the new query string%>
         var list = listFromParams();
         if (checkbox.checked) {
           if (type == "brand") {
@@ -167,7 +183,13 @@
         window.location.search = buildQueryUrl(list);
       }
       
-      <% #Script to check the checkboxes according to the query string currently in the url %>
+      function searchInput(searchBar) {
+        var list = listFromParams();
+        list[4] = searchBar.value;
+        window.location.search = buildQueryUrl(list);
+      }
+      
+      <% #This runs on page load, updates filter/search value to those in the query url %>
       var queryParams = listFromParams();
       for(i = 0; i < 2; i++) {
         if (queryParams[i] != null) {
@@ -178,6 +200,7 @@
       }
       document.getElementById("lprice").value = queryParams[2];
       document.getElementById("hprice").value = queryParams[3];
+      document.getElementById("search").value = queryParams[4];
     </script>
   </div>
   <div class="row">
