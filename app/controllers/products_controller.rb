@@ -4,29 +4,23 @@ class ProductsController < ApplicationController
   # GET /products
   def index
     authorize Product
-    allProducts = Product.all
+    all_products = Product.all
 
     # create two arrays with all the unique brand and material names that are used by the template products/index.html.erb to create html checkboxes
     # the lists are also used by this function to filter products based on query params in the URL
-    brands = Array.new
-    materials = Array.new
-    allProducts.each do |product|
-      brands.insert(-1, product.brand)
-      materials.insert(-1, product.material)
-    end
-    @allBrands = brands.uniq
-    @allMaterials = materials.uniq
+    @all_brands = Product.distinct.pluck(:brand)
+    @all_materials = Product.distinct.pluck(:material)
 
     # create a list of all the products to be displayed by the in html file, after filtering it based on the query params in the URL
     # params are filtered after "(brandX OR brandY) AND (materialA OR materialB) AND lprice AND hprice" logic
     @products = Array.new
-    allProducts.each do |product|
+    all_products.each do |product|
       add = true
       if params[:brand] != nil
         add = false
-        brandFilter = paramsToList(params[:brand])
-        brandFilter.each do |brandNum|
-          if product.brand == @allBrands[brandNum]
+        brand_filter = paramsToList(params[:brand])
+        brand_filter.each do |brandNum|
+          if product.brand == @all_brands[brandNum]
             add = true
             break
           end
@@ -34,9 +28,9 @@ class ProductsController < ApplicationController
       end
       if params[:material] != nil && add
         add = false
-        materialFilter = paramsToList(params[:material])
-        materialFilter.each do |matNum|
-          if product.material == @allMaterials[matNum]
+        material_filter = paramsToList(params[:material])
+        material_filter.each do |matNum|
+          if product.material == @all_materials[matNum]
             add = true
             break
           end

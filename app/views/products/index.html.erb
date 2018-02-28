@@ -1,35 +1,57 @@
-<h1 id="page-title">All Products</h1>
+<h1 id="page-title">All Products<%= @products.count < Product.all.count ? " <small>#{@products.count} results</small>".html_safe : '' %></h1>
 
 <div class="row">
   <div class="col-sm-12 col-md-3">
-    
-    <h4>Search for products:</h4>
-    <input id="search" type="text" onchange="searchInput(this)">
+    <div class="panel panel-default">
+      <div class="panel-heading"><h4>Search & Filter</h4></div>
+      <div class="panel-body">
+        <div>
+          <h4>Search</h4>
+          <div class="form-group">
+            <label for="search">Keyword</label>
+            <input type="text" class="form-control" id="search" onchange="searchInput(this)">
+          </div>
+        </div>
 
-    <h4>Filter by brand:</h4>
-    <% counter = 0 %>
-    <% @allBrands.each do |brand| %>
-      <% #TODO: make sure that the labels and checkboxes vertically align %> 
-      <label for="b<%= counter %>"><%= brand %></label>
-      <input id="b<%= counter %>" type="checkbox" onclick="checkboxClick(this, 'brand')"><br>
-      <% counter += 1 %>
-    <% end %>
-    
-    <h4>Filter by material:</h4>
-    <% counter = 0 %>
-    <% @allMaterials.each do |material| %>
-      <label for="m<%= counter %>"><%= material %></label>
-      <input id="m<%= counter %>" type="checkbox" onclick="checkboxClick(this, 'material')"><br>
-      <% counter += 1 %>
-    <% end %>
-    
-    <h4>Filter by price:</h4>
-    <label for="lprice">Minimum price</label>
-    <input type="number" id="lprice" onchange="priceInput(this, 'lprice')"><br>
-    <label for="hprice">Maximum price</label>
-    <input type="number" id="hprice" onchange="priceInput(this, 'hprice')"><br>
-    
-    <p id="test"></p>
+        <div class="margin-top-small">
+          <h4>Filter by brand</h4>
+          <% counter = 0 %>
+          <% @all_brands.each do |brand| %>
+            <div class="checkbox">
+              <label>
+                <input id="b<%= counter %>" type="checkbox" onclick="checkboxClick(this, 'brand')"> <%= brand %>
+              </label>
+            </div>
+            <% counter += 1 %>
+          <% end %>
+        </div>
+
+        <div class="margin-top-small">
+          <h4>Filter by material</h4>
+          <% counter = 0 %>
+          <% @all_materials.each do |material| %>
+            <div class="checkbox">
+              <label>
+                <input id="m<%= counter %>" type="checkbox" onclick="checkboxClick(this, 'material')"> <%= material %>
+              </label>
+            </div>
+            <% counter += 1 %>
+          <% end %>
+        </div>
+
+        <div class="margin-top-small">
+          <h4>Filter by price</h4>
+          <div class="form-group">
+            <label for="lprice">Minimum Price</label>
+            <input type="number" class="form-control" id="lprice" onchange="priceInput(this, 'lprice')">
+          </div>
+          <div class="form-group">
+            <label for="hprice">Maximum Price</label>
+            <input type="number" class="form-control" id="hprice" onchange="priceInput(this, 'hprice')">
+          </div>
+        </div>
+      </div>
+    </div>
     
     <script>
       <% #This should be moved to its own js. file or converted into coffeescript %> 
@@ -233,8 +255,13 @@
         </div>
       <% end %>
     <% else %>
-      <h2 class="text-muted text-center margin-top-large">There are no products in the shop.</h2>
-      <p class="text-muted text-center">If you're a seller, create some products now.</p>
+      <% if @products.count < Product.all.count #check if we're displaying an empty list or an empty search result %>
+        <h2 class="text-muted text-center margin-top-large">There are no results for your search.</h2>
+        <p class="text-muted text-center">Consider changing the search parameters to include more products.</p>
+      <% else %>
+        <h2 class="text-muted text-center margin-top-large">There are no products in the shop.</h2>
+        <p class="text-muted text-center">If you're a seller, create some products now.</p>
+      <% end %>
     <% end %>
   </div>
 </div>
