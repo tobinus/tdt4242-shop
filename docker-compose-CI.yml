@@ -1,0 +1,11 @@
+db:
+  image: sqlite:3.22.0
+  ports:
+    - 5432:5432/tcp
+web:
+  build: .
+  dockerfile: Dockerfile-CI
+  links:
+    - db
+  environment:
+    RAILS_ENV: test
