@@ -4,5 +4,5 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-CI
-      environment:
-        RAILS_ENV: test
+    environment:
+      RAILS_ENV: test
