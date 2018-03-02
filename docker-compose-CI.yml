@@ -1,7 +1,8 @@
 version: '2.1'
 services:
   web:
-    context: .
-    dockerfile: Dockerfile-CI
-    environment:
-      RAILS_ENV: test
+    build:
+      context: .
+      dockerfile: Dockerfile-CI
+      environment:
+        RAILS_ENV: test
