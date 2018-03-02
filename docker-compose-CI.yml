@@ -1,5 +1,4 @@
 db:
-  image: sqlite:3.22.0
   ports:
     - 5432:5432/tcp
 web:
