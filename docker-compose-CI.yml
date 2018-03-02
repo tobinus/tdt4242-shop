@@ -1,4 +1,4 @@
-
+version: 2.1
 web:
   build: .
   dockerfile: Dockerfile-CI
