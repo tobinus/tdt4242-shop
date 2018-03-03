@@ -1,37 +1,37 @@
-<%= form_for @deal, :remote => true, :html => {class: 'form-horizontal'} do |f| %>
+<%= form_for @deal, :remote => true, :html => {class: ['form-horizontal', 'row', 'multi-col-form']} do |f| %>
   <% @deal.discount_percentage.present? ? discount_percentage = @deal.discount_percentage : discount_percentage = 0.5 %>
-  <div class="form-group">
-    <%= f.label(:type, class: "col-sm-2 col-sm-offset-2 control-label") %>
-    <div class="col-sm-6"><%= f.select :type, options_for_select([["Volume-based discount", "VolumeDeal"], ["Percentage-based discount", "PercentageDeal"]], @deal.type), { include_blank: 'Please select', class: "form-control" }, required: true %></div>
-    <div class="col-sm-2"></div>
-  </div>
-  <div class="form-group">
-    <%= f.label(:product_id, class: "col-sm-2 col-sm-offset-2 control-label") %>
-    <div class="col-sm-6"><%= f.select :product_id, Product.all.collect{ |p| [ p.name, p.id ] }, { include_blank: 'Please select', class: "form-control"}, required: true %></div>
-    <div class="col-sm-2"></div>
-  </div>
-  <div class="form-group volume-based-deal hidden">
-    <%= f.label(:trigger_amount, class: "col-sm-2 col-sm-offset-2 control-label") %>
-    <div class="col-sm-6"><%= f.number_field(:trigger_amount, in: 0..100000, step: 1, class: "form-control", default: 0) %></div>
-    <div class="col-sm-2"></div>
-  </div>
-  <div class="form-group volume-based-deal hidden">
-    <%= f.label(:deal_amount, class: "col-sm-2 col-sm-offset-2 control-label") %>
-    <div class="col-sm-6"><%= f.number_field(:deal_amount, in: 0..100000, step: 1, class: "form-control", default: 0) %></div>
-    <div class="col-sm-2"></div>
-  </div>
-  <div class="form-group percentage-based-deal hidden">
-    <%= f.label(:discount_percentage, class: "col-sm-2 col-sm-offset-2 control-label") %>
-    <div class="col-sm-5"><%= f.range_field(:discount_percentage, in: 1..100, value: discount_percentage * 100, class: "form-control", oninput: "deal_percentage_display.value = deal_discount_percentage.value + ' %'") %></div>
-    <div class="col-sm-1">
-      <output name="deal_percentage_display" id="deal_percentage_display"><%= number_with_precision(discount_percentage * 100, precision: 0) %> %</output>
+  <div class="col-xs-12 col-md-6">
+    <div class="form-group">
+      <div><%= f.label(:type, class: "control-label") %></div>
+      <%= f.select :type, options_for_select([["Volume-based discount", "VolumeDeal"], ["Percentage-based discount", "PercentageDeal"]], @deal.type), { include_blank: 'Please select' }, class: "form-control", required: true %>
     </div>
-    <div class="col-sm-2"></div>
-  </div>
-  <div class="row">
-    <div class="col-sm-10">
-      <%= f.submit(class: "btn btn-primary pull-right") %>
+    <div class="form-group">
+      <div><%= f.label(:product_id, class: "control-label") %></div>
+      <%= f.select :product_id, Product.all.collect{ |p| [ p.name, p.id ] }, { include_blank: 'Please select' }, class: "form-control", required: true %>
     </div>
-    <div class="col-sm-2"></div>
+  </div>
+  <div class="col-xs-12 col-md-6">
+    <div class="form-group volume-based-deal hidden">
+      <%= f.label(:trigger_amount, class: "control-label") %>
+      <%= f.number_field(:trigger_amount, in: 0..100000, step: 1, class: "form-control", default: 0) %>
+    </div>
+    <div class="form-group volume-based-deal hidden">
+      <%= f.label(:deal_amount, class: "control-label") %>
+      <%= f.number_field(:deal_amount, in: 0..100000, step: 1, class: "form-control", default: 0) %>
+    </div>
+    <div class="form-group percentage-based-deal hidden">
+      <%= f.label(:discount_percentage, class: "control-label") %>
+      <div class="row">
+        <div class="col-xs-10">
+          <%= f.range_field(:discount_percentage, in: 1..100, value: discount_percentage * 100, class: "form-control", oninput: "deal_percentage_display.value = deal_discount_percentage.value + ' %'") %>
+        </div>
+        <div class="col-xs-2">
+          <output name="deal_percentage_display" id="deal_percentage_display"><%= number_with_precision(discount_percentage * 100, precision: 0) %> %</output>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12">
+    <%= f.submit(class: "btn btn-primary pull-right margin-top-small") %>
   </div>
 <% end %>

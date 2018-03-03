@@ -1,12 +1,15 @@
 <td>
-  <%= link_to user.email, user %>
+  <%= link_to user.name, user %>
 </td>
 <td>
-  <%= form_for(user) do |f| %>
-    <%= f.select(:role, User.roles.keys.map {|role| [role.titleize,role]}) %>
-    <%= f.submit 'Change Role', :class => 'button-xs' %>
+  <%= user.email %>
+</td>
+<td>
+  <%= form_for user, :html => { class: 'form-inline' } do |f| %>
+    <%= f.select(:role, User.roles.keys.map {|role| [role.titleize,role]}, {}, { class: 'form-control' }) %>
+    <%= f.submit 'Change Role', :class => 'btn btn-default btn-sm' %>
   <% end %>
 </td>
-<td>
-  <%= link_to("Delete user", user_path(user), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'button-xs') unless user == current_user %>
+<td class="text-right">
+  <%= link_to("Delete user", user_path(user), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'btn btn-default btn-sm') unless user == current_user %>
 </td>

@@ -10,11 +10,18 @@ class Order < ApplicationRecord
   validates :credit_card_cvc, presence: true, length: { is: 3 }, numericality: true
   validates :credit_card_expiry, presence: true
   validate :order_items_present
+  validate :expiry_date_in_future
 
   private
 
   def order_items_present
     errors.add(:order_items, " – There must be at least one product in the order.") unless
         order_items.count >= 1
+  end
+
+  def expiry_date_in_future
+    if credit_card_expiry.present? && credit_card_expiry < Date.today.at_beginning_of_month
+      errors.add(:credit_card_expiry, "can't be in the past")
+    end
   end
 end

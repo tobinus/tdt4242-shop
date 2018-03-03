@@ -1,3 +1,14 @@
-<h3>User</h3>
-<p>Name: <%= @user.name if @user.name %></p>
-<p>Email: <%= @user.email if @user.email %></p>
+<h1 class="header-with-button"><%= @user.name if @user.name %></h1>
+<%= link_to 'Back to List', users_path, class: 'btn btn-default pull-right pull-reset-xs header-button' %>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <dl>
+      <dt>Name</dt>
+      <dd><%= @user.name if @user.name %></dd>
+      <p></p>
+      <dt>Email address</dt>
+      <dd><%= @user.email if @user.email %></dd>
+    </dl>
+  </div>
+</div>

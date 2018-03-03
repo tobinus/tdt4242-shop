@@ -1,4 +1,19 @@
 <h1 class="header-with-button">Edit Deal <small><%= @deal.deal_print %></small></h1>
-<%= link_to 'Back to List', deals_path, class: 'btn btn-default pull-right header-button' %>
+<%= link_to 'Back to List', deals_path, class: 'btn btn-default pull-right pull-reset-xs header-button' %>
 
-<%= render 'form' %>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <strong>Please note:</strong>
+    <ul>
+      <li>You can only create one deal of each type for every product.</li>
+      <li>All deals for a product will be combined. This means that a customer can profit from both percentage-based and
+        volume-based deals at the same time.
+      </li>
+      <li>When creating a volume-based deal, the trigger amount is the amount a customer has to by to trigger the deal.
+        The deal amount is the amount that they will receive when reaching the trigger amount, including both paid and
+        free products. Hence, the deal amount must be larger than the trigger amount.
+      </li>
+    </ul>
+    <%= render 'form' %>
+  </div>
+</div>

@@ -52,208 +52,39 @@
         </div>
       </div>
     </div>
-    
-    <script>
-      <% #This should be moved to its own js. file or converted into coffeescript %> 
-      <% #This code manages the query string in the URL and the values of the filter and search elements, ensuring consistency between them %>
-      
-      function createList(paramString, paramName) {
-      	var pos = paramString.search(paramName);
-      	if (pos != -1) {
-      		var tempParamString = paramString.substring(pos+paramName.length);
-      		var endpos = tempParamString.indexOf("&");
-      		if (endpos != -1) {
-          		tempParamString = tempParamString.substring(0, endpos);
-      		}
-          var list = tempParamString.split("_");
-          return list.slice(0, list.length-1);
-      	} else {
-      		return null;
-      	}
-      }
-      function getPrice(paramString, paramName) {
-      	var pos = paramString.search(paramName);
-      	if (pos != -1) {
-      		var tempParamString = paramString.substring(pos+paramName.length);
-      		var endpos = tempParamString.indexOf("&");
-      		if (endpos != -1) {
-      			tempParamString = tempParamString.substring(0, endpos);
-      		}
-      		return tempParamString
-      	} else {
-      		return null;
-      	}
-      }
-      function searchString(paramString) {
-        var pos = paramString.search("search=");
-        if (pos != -1) {
-          return paramString.substring(pos+7);
-        } else {
-          return null;
-        }
-      }
-      <% #This function creates a list of the parameters in the query string in the URL, the two first elements also being lists, functions above are helper functions for this %>
-      function listFromParams() {
-      	var brand, material, lprice, hprice;
-      	var paramString = window.location.href;
-      	var pos = paramString.indexOf("?");
-              
-      	if (pos != -1) {
-      		paramString = paramString.substring(pos+1);
-      		brand = createList(paramString, "brand=");
-      		material = createList(paramString, "material=");
-      		lprice = getPrice(paramString, "lprice=");
-      		hprice = getPrice(paramString, "hprice=");
-      		search = searchString(paramString);
-      		return [brand, material, lprice, hprice, search];
-      	} else {
-      		return [null, null, null, null, null];
-      	}
-      }
-      <% #This function builds the query string for the URL from the listed created by listFromParams() %>
-      function buildQueryUrl(list) {
-      	var queryString = "?";
-          if (list[0] !== null && list[0].length != 0) {
-          	queryString += "brand=";
-          	for (i = 0; i < list[0].length; i++) {
-              	queryString += list[0][i] + "_";
-              }
-          }
-          if (list[1] !== null && list[1].length != 0) {
-          	if (queryString != "?") {
-              	queryString += "&";
-              }
-              queryString += "material=";
-              for (i = 0; i < list[1].length; i++) {
-              	queryString += list[1][i] + "_";
-              }
-          }
-          if (list[2] !== null && list[2] !== "") {
-          	if (queryString != "?") {
-              	queryString += "&";
-              }
-              queryString += "lprice=" + list[2];
-          }
-          if (list[3] !== null && list[3] !== "") {
-          	if (queryString != "?") {
-              	queryString += "&";
-              }
-              queryString += "hprice=" + list[3];
-          }
-          if (list[4] !== null && list[4] !== "") {
-            if (queryString != "?") {
-              queryString += "&";
-            }
-            queryString += "search=" + list[4];
-          }
-          if (queryString == "?") {
-            queryString = "";
-          }
-          return queryString;
-      }
-      function checkboxClick(checkbox, type) {
-        var list = listFromParams();
-        if (checkbox.checked) {
-          if (type == "brand") {
-            if (list[0] === null) {
-              list[0] = [checkbox.id];
-            } else {
-              if (list[0].indexOf(checkbox.id) == -1) {
-                list[0].push(checkbox.id);
-              }
-            }
-          }
-          if (type == "material") {
-            if (list[1] === null) {
-              list[1] = [checkbox.id];
-            } else {
-              if (list[1].indexOf(checkbox.id) == -1) {
-                list[1].push(checkbox.id);
-              }
-            }
-          }
-          window.location.search = buildQueryUrl(list);
-        } else {
-          if (type == "brand") {
-            if (list[0] !== null) {
-              var pos = list[0].indexOf(checkbox.id);
-              if (pos != -1) {
-                list[0].splice(pos, 1);
-              }
-            }
-          }
-          if (type == "material") {
-            if (list[1] !== null) {
-              var pos = list[1].indexOf(checkbox.id);
-              if (pos != -1) {
-                list[1].splice(pos, 1);
-              }
-            }
-          }
-          window.location.search = buildQueryUrl(list);
-        }
-      }
-      
-      function priceInput(price, type) {
-        var list = listFromParams();
-        if (type == "lprice") {
-          list[2] = price.value;
-        }
-        if (type == "hprice") {
-          list[3] = price.value;
-        }
-        window.location.search = buildQueryUrl(list);
-      }
-      
-      function searchInput(searchBar) {
-        var list = listFromParams();
-        list[4] = searchBar.value;
-        window.location.search = buildQueryUrl(list);
-      }
-      
-      <% #This runs on page load, updates filter/search value to those in the query url %>
-      var queryParams = listFromParams();
-      for(i = 0; i < 2; i++) {
-        if (queryParams[i] != null) {
-          for(j = 0; j < queryParams[i].length; j++) {
-            document.getElementById(queryParams[i][j]).checked = true;
-          }
-        }
-      }
-      document.getElementById("lprice").value = queryParams[2];
-      document.getElementById("hprice").value = queryParams[3];
-      document.getElementById("search").value = queryParams[4];
-    </script>
   </div>
-  <div class="col-sm-12 col-md-9 row">
+
+  <div class="col-sm-12 col-md-9">
     <% if @products.length > 0 %>
-      <% @products.each do |product| %>
-        <div class="col-xs-12 col-sm-6 col-lg-4">
-          <div class="panel panel-default">
-            <div class="panel-heading product-panel-heading"><img src="/assets/placeholder_<%= rand(1..4) %>.svg" alt="" class="product-img"></div>
-            <div class="panel-body">
-              <div class="caption">
-                <h4 class="pull-right"><%= number_to_currency(product.price) %></h4>
-                <h4><%= link_to product.name, product %></h4>
-                <p><%= product.description %></p>
+      <div class="row">
+        <% @products.each do |product| %>
+          <div class="col-xs-12 col-sm-6 col-lg-4">
+            <div class="panel panel-default">
+              <div class="panel-heading product-panel-heading"><img src="/assets/placeholder_<%= rand(1..4) %>.svg" alt="" class="product-img"></div>
+              <div class="panel-body">
+                <div class="caption">
+                  <h4 class="pull-right"><%= number_to_currency(product.price) %></h4>
+                  <h4><%= link_to product.name, product %></h4>
+                  <p><%= product.description %></p>
+                </div>
+              </div>
+              <div class="panel-footer text-right">
+                <% if user_signed_in? %>
+                  <% if !Cart.product_in_cart?(current_user.id, product.id) and Product.find(product.id).stock_level > 0 %>
+                    <%= link_to 'Add to Cart', { controller: 'cart_items', action: 'add_to_cart', product_id: product.id, amount: 1 }, class: 'btn btn-primary', method: :post, remote: true %>
+                  <% elsif Product.find(product.id).stock_level > 0 %>
+                    <%= link_to 'Item already in cart', {}, class: 'btn btn-default', disabled: 'disabled' %>
+                  <% else %>
+                    <%= link_to 'Item out of stock', {}, class: 'btn btn-default', disabled: 'disabled' %>
+                  <% end %>
+                <% else %>
+                  <%= link_to 'Please sign in to buy this item', '/users/sign_in', class: 'btn btn-default' %>
+                <% end %>
               </div>
             </div>
-            <div class="panel-footer text-right">
-              <% if user_signed_in? %>
-                <% if !Cart.product_in_cart?(current_user.id, product.id) and Product.find(product.id).stock_level > 0 %>
-                  <%= link_to 'Add to Cart', { controller: 'cart_items', action: 'add_to_cart', product_id: product.id, amount: 1 }, class: 'btn btn-primary', method: :post, remote: true %>
-                <% elsif Product.find(product.id).stock_level > 0 %>
-                  <%= link_to 'Item already in cart', {}, class: 'btn btn-default', disabled: 'disabled' %>
-                <% else %>
-                  <%= link_to 'Item out of stock', {}, class: 'btn btn-default', disabled: 'disabled' %>
-                <% end %>
-              <% else %>
-                <%= link_to 'Please sign in to buy this item', {}, class: 'btn btn-default', disabled: 'disabled' %>
-              <% end %>
-            </div>
           </div>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     <% else %>
       <% if @products.count < Product.all.count #check if we're displaying an empty list or an empty search result %>
         <h2 class="text-muted text-center margin-top-large">There are no results for your search.</h2>
