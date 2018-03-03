@@ -5,4 +5,10 @@ services:
       context: .
       dockerfile: Dockerfile-CI
     environment:
-      RAILS_ENV: test
+      RAILS_ENV: production
+      RACK_ENV: production
+      RAILS_LOG_TO_STDOUT: true
+      ADMIN_EMAIL: Administrator
+      ADMIN_PASSWORD: administrator
+      DOMAIN_NAME: tdt4242eshop.azurewebsites.net
+      SECRET_KEY_BASE: c6af7b3b873e6c184d39d4be9b568ef963e8dd001f1020f75d1788f468705c4c7f3dc9241387048dff06331ad78ddf7ec757c49142dd619e4d304648feb6a335
