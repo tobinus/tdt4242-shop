@@ -15,6 +15,7 @@ ADD Gemfile.lock /usr/src/app/Gemfile.lock
 RUN bundle install
 ADD . /usr/src/app
 COPY config/database.yml /usr/src/app/config/database.yml
-RUN rake db:setup RAILS_ENV=production
+ENV RAILS_ENV production
+RUN rake db:setup
 EXPOSE 3000
 CMD ["rails", "server", "-b", "0.0.0.0"]
