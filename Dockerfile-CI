@@ -1,5 +1,11 @@
 FROM ruby:2.5.0
-ENV RAILS_LOG_TO_STDOUT=1
+ENV RAILS_ENV production
+ENV RACK_ENV production
+ENV RAILS_LOG_TO_STDOUT true
+ENV ADMIN_EMAIL Administrator
+ENV ADMIN_PASSWORD administrator
+ENV DOMAIN_NAME tdt4242eshop.azurewebsites.net
+ENV SECRET_KEY_BASE c6af7b3b873e6c184d39d4be9b568ef963e8dd001f1020f75d1788f468705c4c7f3dc9241387048dff06331ad78ddf7ec757c49142dd619e4d304648feb6a335
 RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs
 RUN mkdir /usr/src/app
 WORKDIR /usr/src/app
