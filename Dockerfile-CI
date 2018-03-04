@@ -15,3 +15,5 @@ RUN bundle install
 ADD . /usr/src/app
 COPY config/database.yml /usr/src/app/config/database.yml
 RUN rake db:setup
+EXPOSE 3000
+CMD ["rails", "server", "-b", "0.0.0.0"]
