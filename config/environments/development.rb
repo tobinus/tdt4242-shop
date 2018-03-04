@@ -43,9 +43,9 @@ Rails.application.configure do
   config.assets.debug = true
 
   config.action_mailer.smtp_settings = {
-    address: Rails.application.secrets.email_server_address,
+    address: "smtp.gmail.com",
     port: 587,
-    domain: Rails.application.secrets.email_domain_name,
+    domain: Rails.application.secrets.domain_name,
     authentication: "plain",
     enable_starttls_auto: true,
     user_name: Rails.application.secrets.email_provider_username,

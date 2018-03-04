@@ -74,13 +74,13 @@ Rails.application.configure do
   config.active_support.deprecation = :notify
 
   config.action_mailer.smtp_settings = {
-    address: "smtp.gmail.com",
-    port: 587,
-    domain: Rails.application.secrets.domain_name,
-    authentication: "plain",
-    enable_starttls_auto: true,
-    user_name: Rails.application.secrets.email_provider_username,
-    password: Rails.application.secrets.email_provider_password
+      address: Rails.application.secrets.email_server_address,
+      port: 587,
+      domain: Rails.application.secrets.email_domain_name,
+      authentication: "plain",
+      enable_starttls_auto: true,
+      user_name: Rails.application.secrets.email_provider_username,
+      password: Rails.application.secrets.email_provider_password
   }
   # ActionMailer Config
   config.action_mailer.default_url_options = { :host => Rails.application.secrets.domain_name }
