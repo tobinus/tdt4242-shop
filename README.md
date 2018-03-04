@@ -1,6 +1,8 @@
 TDT4242 Shop
 ================
 
+A running copy of the project can be found at https://tdt4242eshop.azurewebsites.net/.
+
 What's included?
 ----------------
 
