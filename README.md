@@ -1,6 +1,8 @@
 TDT4242 Shop
 ================
 
+A running copy of the project can be found at https://tdt4242eshop.azurewebsites.net/.
+
 What's included?
 ----------------
 
@@ -18,13 +20,21 @@ Running the project
 - Ruby 2.5.0
 - Rails 5.1.4
 
+
 Run `bundle install`.
+
 Run `rails server`.
+
 Run `rake db:setup`.
+
 
 The application should be available at `localhost:3000`.
 
+
 Default users are:
+
 `administrator@tdt4242.shop:administrator`
+
 `seller@tdt4242.shop:seller`
+
 `customer@tdt4242.shop:customer`
