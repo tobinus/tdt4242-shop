@@ -2,6 +2,7 @@ FROM ruby:2.5.0
 ENV RAILS_ENV production
 ENV RACK_ENV production
 ENV RAILS_LOG_TO_STDOUT true
+ENV RAILS_SERVE_STATIC_FILES true
 ENV ADMIN_EMAIL administrator@tdt4242.shop
 ENV ADMIN_PASSWORD administrator
 ENV DOMAIN_NAME tdt4242eshop.azurewebsites.net
