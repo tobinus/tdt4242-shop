@@ -13,3 +13,141 @@
  *= require_tree .
  *= require_self
  */
+
+html {
+  padding-left: calc(100vw - 100%);
+  background-color: #eee;
+}
+
+nav {
+  padding-left: calc(100vw - 100%);
+}
+
+main {
+  padding-top: 25px;
+}
+
+.margin-top-large {
+  margin-top: 8rem;
+}
+
+.margin-bottom-large {
+  margin-bottom: 8rem;
+}
+
+.margin-top-small {
+  margin-top: 3rem;
+}
+
+.margin-top-medium {
+  margin-top: 5rem;
+}
+
+.margin-bottom-medium {
+  margin-bottom: 5rem;
+}
+
+.padding-small {
+  padding: 15px;
+}
+
+.no-border-top td {
+  border-top: none !important;
+}
+
+#error_explanation h2 {
+  margin-top: 0;
+}
+
+.form-field-small {
+  width: 10rem !important;
+}
+
+.header-button {
+  margin-top: 20px;
+  margin-left: 15px;
+}
+
+.header-with-button {
+  display: inline-block;
+}
+
+.authform {
+  padding-top: inherit;
+  margin: inherit;
+
+  form {
+    padding: inherit;
+    background-color: inherit;
+    border: inherit;
+    border-radius: inherit;
+    box-shadow: inherit;
+
+    .fieldset-transparent {
+      padding: 0;
+      margin: inherit;
+      background-color: inherit;
+      border: inherit;
+      border-radius: inherit;
+      box-shadow: inherit;
+    }
+  }
+}
+.authform-wide {
+  max-width: inherit;
+  h3 {
+    margin-left: 15px;
+  }
+}
+.authform-cancel {
+  padding: 15px;
+  form {
+    padding: 0;
+  }
+}
+
+form.multi-col-form {
+  .form-group {
+    margin-left: inherit;
+    margin-right: inherit;
+  }
+}
+
+.panel {
+  #error_explanation {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+}
+
+.no-padding {
+  padding: 0 !important;
+}
+
+.date-input {
+  display: inline-block;
+  width: 49%;
+}
+
+@media (max-width: 767px) {
+  .pull-reset-xs {
+    float: none !important;
+    margin-left: 0;
+    margin-bottom: 15px;
+  }
+
+  .text-right-xs {
+    text-align: left;
+    a {
+      margin-top: 2rem;
+    }
+  }
+
+  .center-xs {
+    float: none !important;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    margin-bottom: 15px;
+  }
+}

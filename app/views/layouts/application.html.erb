@@ -2,8 +2,8 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= content_for?(:title) ? yield(:title) : "Tdt4242 Shop" %></title>
-    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Tdt4242 Shop" %>">
+    <title><%= content_for?(:title) ? yield(:title) : "TDT4242 Shop – Group 3" %></title>
+    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "TDT4242 Shop – Group 3" %>">
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => 'reload' %>
     <%= csrf_meta_tags %>
@@ -13,8 +13,10 @@
       <%= render 'layouts/navigation' %>
     </header>
     <main role="main">
-       <%= render 'layouts/messages' %>
-       <%= yield %>
+      <div class="container">
+        <%= render 'layouts/messages' %>
+        <%= yield %>
+      </div>
     </main>
   </body>
 </html>

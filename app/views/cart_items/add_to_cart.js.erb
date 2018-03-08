@@ -1,0 +1,4 @@
+<% if @cart_item.errors.any? %>
+  $('#error_explanation').remove();
+  $("<%= j(render 'error_messages') %> ").insertBefore('#page-title');
+<% end %>

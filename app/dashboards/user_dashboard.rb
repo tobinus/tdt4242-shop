@@ -8,6 +8,8 @@ class UserDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
+    cart: Field::HasOne,
+    orders: Field::HasMany,
     id: Field::Number,
     email: Field::String,
     encrypted_password: Field::String,
@@ -27,6 +29,7 @@ class UserDashboard < Administrate::BaseDashboard
     confirmation_sent_at: Field::DateTime,
     unconfirmed_email: Field::String,
     role: Field::String.with_options(searchable: false),
+    cart_id: Field::Number,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -35,15 +38,17 @@ class UserDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
+    :cart,
+    :orders,
     :id,
     :email,
-    :encrypted_password,
-    :reset_password_token,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
+    :cart,
+    :orders,
     :id,
     :email,
     :encrypted_password,
@@ -63,12 +68,15 @@ class UserDashboard < Administrate::BaseDashboard
     :confirmation_sent_at,
     :unconfirmed_email,
     :role,
+    :cart_id,
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
+    :cart,
+    :orders,
     :email,
     :encrypted_password,
     :reset_password_token,
@@ -85,6 +93,7 @@ class UserDashboard < Administrate::BaseDashboard
     :confirmation_sent_at,
     :unconfirmed_email,
     :role,
+    :cart_id,
   ].freeze
 
   # Overwrite this method to customize how users are displayed

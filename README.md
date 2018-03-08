@@ -1,48 +1,40 @@
-Tdt4242 Shop
+TDT4242 Shop
 ================
 
-This application was generated with the [rails_apps_composer](https://github.com/RailsApps/rails_apps_composer) gem
-provided by the [RailsApps Project](http://railsapps.github.io/).
+A running copy of the project can be found at https://tdt4242eshop.azurewebsites.net/.
 
-Rails Composer is supported by developers who purchase our RailsApps tutorials.
+What's included?
+----------------
 
-Problems? Issues?
------------
+- [Devise](http://devise.plataformatec.com.br/) for authentication
+- [Pundit](https://github.com/varvet/pundit#pundit) for authorization
+- [Bootstrap v3](https://getbootstrap.com/docs/3.3/css/) for layout and styles
+- [Administrate](https://github.com/thoughtbot/administrate#administrate) as an admin dashboard for database entries
+- Puma as web server
+- Sqlite as database
+- Embedded Ruby as template engine
 
-Need help? Ask on Stack Overflow with the tag 'railsapps.'
-
-Your application contains diagnostics in the README file. Please provide a copy of the README file when reporting any issues.
-
-If the application doesn't work as expected, please [report an issue](https://github.com/RailsApps/rails_apps_composer/issues)
-and include the diagnostics.
-
-Ruby on Rails
--------------
-
-This application requires:
+Running the project
+-------------------
 
 - Ruby 2.5.0
 - Rails 5.1.4
 
-Learn more about [Installing Rails](http://railsapps.github.io/installing-rails.html).
 
-Getting Started
----------------
+Run `bundle install`.
 
-Documentation and Support
--------------------------
+Run `rails server`.
 
-Issues
--------------
+Run `rake db:setup`.
 
-Similar Projects
-----------------
 
-Contributing
-------------
+The application should be available at `localhost:3000`.
 
-Credits
--------
 
-License
--------
+Default users are:
+
+`administrator@tdt4242.shop:administrator`
+
+`seller@tdt4242.shop:seller`
+
+`customer@tdt4242.shop:customer`

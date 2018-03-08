@@ -1,0 +1,11 @@
+<% if @order.errors.any? %>
+  <div id="error_explanation">
+    <h2>We encountered <%= pluralize(@order.errors.count, "error") %> when saving this order:</h2>
+
+    <ul>
+      <% @order.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

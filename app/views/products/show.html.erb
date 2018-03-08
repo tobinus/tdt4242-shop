@@ -1,0 +1,41 @@
+<h1 id="page-title" class="header-with-button"><%= @product.name %></h1>
+<% if current_user.present? and current_user.role != 'customer' %>
+  <%= link_to 'Edit this Product', edit_product_path(@product), class: 'btn btn-default pull-right pull-reset-xs header-button' %>
+<% end %>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-xs-12 col-sm-4">
+        <%= image_tag "/assets/placeholder_#{ rand(1..4) }.svg", class: "product-img", alt: "Product Image"%>
+      </div>
+      <div class="col-xs-12 col-sm-5">
+        <h2><%= @product.name %></h2>
+        <p><%= @product.description %></p>
+        <dl class="dl-horizontal">
+          <dt>Brand</dt>
+          <dd><%= @product.brand %></dd>
+          <dt>Material</dt>
+          <dd><%= @product.material %></dd>
+          <dt>Weight</dt>
+          <dd><%= number_with_precision(@product.weight, precision: 2) %> kg</dd>
+        </dl>
+      </div>
+      <div class="col-xs-12 col-sm-3 text-right text-right-xs">
+        <h2><%= number_to_currency(@product.price) %></h2>
+        <h4><%= @product.stock_level %> in stock</h4>
+        <% if user_signed_in? %>
+          <% if !Cart.product_in_cart?(current_user.id, @product.id) and Product.find(@product.id).stock_level > 0 %>
+            <%= link_to 'Add to Cart', { controller: 'cart_items', action: 'add_to_cart', product_id: @product.id, amount: 1 }, class: 'btn btn-primary margin-top-large', method: :post, remote: true %>
+          <% elsif Product.find(@product.id).stock_level > 0 %>
+            <%= link_to 'Item already in cart', {}, class: 'btn btn-default margin-top-large', disabled: 'disabled' %>
+          <% else %>
+            <%= link_to 'Item out of stock', {}, class: 'btn btn-default margin-top-large', disabled: 'disabled' %>
+          <% end %>
+        <% else %>
+          <%= link_to 'Please sign in to buy this item', '/users/sign_in', class: 'btn btn-default margin-top-large' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

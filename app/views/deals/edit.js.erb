@@ -1,0 +1,4 @@
+<% if @deal.errors.any? %>
+  $('#error_explanation').remove();
+  $("<%= j(render 'error_messages') %> ").prependTo('#edit_deal_<%= @deal.id %>');
+<% end %>

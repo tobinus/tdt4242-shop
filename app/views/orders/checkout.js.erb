@@ -1,0 +1,4 @@
+<% if @order.errors.any? %>
+  $('#error_explanation').remove();
+  $("<%= j(render 'error_messages') %> ").insertBefore('#product-list');
+<% end %>

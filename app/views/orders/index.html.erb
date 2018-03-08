@@ -1,0 +1,81 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Your Orders</h1>
+
+<% if @orders.length > 0 %>
+  <% @orders.each do |order| %>
+    <div class="panel panel-default">
+      <div class="panel-heading">Your order from <%= order.created_at.strftime("%d.%m.%Y %H:%M") %></div>
+      <div class="panel-body">
+        <p>The total amount for <%= pluralize(order.order_items.count, "item") %> is <%= number_to_currency(order.total_amount) %>.</p>
+        <p>
+          <h3>Payment Data</h3>
+          <dl class="dl-horizontal">
+            <dt>Credit Card Type</dt>
+            <dd><%= order.credit_card_type %></dd>
+            <dt>Name on Credit Card</dt>
+            <dd><%= order.credit_card_name %></dd>
+            <dt>Credit Card Number</dt>
+            <dd><%= order.credit_card_number %></dd>
+            <dt>Credit Card Expiry</dt>
+            <dd><%= order.credit_card_expiry %></dd>
+          </dl>
+        </p>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th class="text-right">Amount</th>
+              <th class="text-right">Price per Piece</th>
+              <th class="text-right">Price</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% order.order_items.each do |order_item| %>
+              <tr>
+                <td><%= order_item.product.name %></td>
+                <td class="text-right"><%= order_item.amount %></td>
+                <td class="text-right"><%= number_to_currency(order_item.product.price) %></td>
+                <td class="text-right"><%= number_to_currency(order_item.amount * order_item.product.price) %></td>
+              </tr>
+            <% end %>
+          </tbody>
+
+          <tfoot>
+            <tr>
+              <td colspan="3"><strong>Total<%= @order_details[order.id][:discounts].length > 0 ? " before discounts" : "" %></strong></td>
+              <td class="text-right"><strong><%= number_to_currency(@order_details[order.id][:total_amount]) %></strong></td>
+            </tr>
+            <% if @order_details[order.id][:discounts].length > 0 %>
+              <tr><td colspan="5"><strong>Discounts</strong></td></tr>
+              <% @order_details[order.id][:discounts].each do |disc| %>
+                <% deal = Deal.find(disc[:deal_id]) %>
+                <tr class="no-border-top">
+                  <% if deal.type == 'VolumeDeal' %>
+                    <td colspan="3"><%= "#{disc[:deal_multiplier]}x #{deal.deal_print}" %></td>
+                    <td class="text-right"><%= number_to_currency((deal.deal_amount - deal.trigger_amount) * deal.product.price * -1)  %></td>
+                  <% else %>
+                    <td colspan="3"><%= deal.deal_print %></td>
+                    <td class="text-right"><%= number_to_currency(deal.discount_percentage * deal.product.price * disc[:deal_multiplier] * -1) %></td>
+                  <% end %>
+                </tr>
+              <% end %>
+              <tr>
+                <td colspan="3"><strong>Total after discounts</strong></td>
+                <td class="text-right"><strong><%= number_to_currency(@order_details[order.id][:total_amount] - @order_details[order.id][:total_discount]) %></strong></td>
+              </tr>
+            <% end %>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  <% end %>
+<% else %>
+  <h2 class="text-muted text-center margin-top-large">You have not yet made any orders.</h2>
+<% end %>
+
+<!-- TODO calculate deals and show the discounted price -->
